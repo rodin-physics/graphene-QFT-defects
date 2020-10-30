@@ -1,11 +1,10 @@
-include("scattering.jl")
+include("../defects/scattering.jl")
 
 # Integrand used to calculate the local density in graphene
 function δρ_Graphene_Integrand(
     loc::GrapheneCoord,
     z,
     imps::Vector{ImpurityState},
-    occ_num::Vector{Float64},
     mod_atoms::Vector{PerturbedAtom},
 )
     atoms = scattering_atoms(imps, mod_atoms)
@@ -15,14 +14,14 @@ function δρ_Graphene_Integrand(
     Δ_ = Δ(atoms)
     if length(imps) != 0
         V_ = V(atoms, imps)
-        Γ0 = map((x, y) -> z - x.ϵ - x.U * y, imps, occ_num) |> Diagonal |> inv
+        Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
         D =
             (Δ_ .+ V_ * Γ0 * transpose(V_)) * inv(
-                Matrix{Int}(I, n_atoms, n_atoms) .-
+                Diagonal(ones(n_atoms, n_atoms)) .-
                 prop_mat * (Δ_ .+ V_ * Γ0 * transpose(V_)),
             )
     else
-        D = Δ_ * inv(Matrix{Int}(I, n_atoms, n_atoms) .- prop_mat * Δ_)
+        D = Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_)
     end
     return (transpose(PropVectorR)*D*PropVectorR)[1]
 
@@ -35,12 +34,10 @@ function δρ_Graphene(loc, s::GrapheneSystem)
     μ = s.μ
     T = s.T
     imps = s.imps
-    occ_num = s.occ_num
     mod_atoms = s.mod_atoms
     if T == 0
         res = quadgk(
-            x ->
-                real(δρ_Graphene_Integrand(loc, μ + 1im * x, imps, occ_num, mod_atoms)),
+            x -> real(δρ_Graphene_Integrand(loc, μ + 1im * x, imps, mod_atoms)),
             0,
             Inf,
             rtol = ν,
@@ -49,13 +46,8 @@ function δρ_Graphene(loc, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Graphene_Integrand(
-                    loc,
-                    x + μ + 1im * η,
-                    imps,
-                    occ_num,
-                    mod_atoms,
-                )) * nF(x, T),
+                -imag(δρ_Graphene_Integrand(loc, x + μ + 1im * η, imps, mod_atoms)) *
+                nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
@@ -69,7 +61,6 @@ function δρ_Impurity_Integrand(
     n,
     z,
     imps::Vector{ImpurityState},
-    occ_num::Vector{Float64},
     mod_atoms::Vector{PerturbedAtom},
 )
     atoms = scattering_atoms(imps, mod_atoms)
@@ -81,14 +72,14 @@ function δρ_Impurity_Integrand(
 
     Λ =
         prop_mat .+
-        prop_mat * Δ_ * inv(Matrix{Int}(I, n_atoms, n_atoms) .- prop_mat * Δ_) * prop_mat
+        prop_mat * Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_) * prop_mat
 
-    Γ0 = map((x, y) -> z - x.ϵ - x.U * y, imps, occ_num) |> Diagonal |> inv
+    Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
     res =
         Γ0 *
         transpose(V_) *
         Λ *
-        inv(Matrix{Int}(I, n_atoms, n_atoms) .- V_ * Γ0 * transpose(V_) * Λ) *
+        inv(Diagonal(ones(n_atoms, n_atoms)) .- V_ * Γ0 * transpose(V_) * Λ) *
         V_ *
         Γ0
 
@@ -102,11 +93,10 @@ function δρ_Impurity(n, s::GrapheneSystem)
     μ = s.μ
     T = s.T
     imps = s.imps
-    occ_num = s.occ_num
     mod_atoms = s.mod_atoms
     if T == 0
         res = quadgk(
-            x -> real(δρ_Impurity_Integrand(n, μ + 1im * x, imps, occ_num, mod_atoms)),
+            x -> real(δρ_Impurity_Integrand(n, μ + 1im * x, imps, mod_atoms)),
             0,
             Inf,
             rtol = ν,
@@ -115,7 +105,8 @@ function δρ_Impurity(n, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, occ_num, mod_atoms)) * nF(x, T),
+                -imag(δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, mod_atoms)) *
+                nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
@@ -127,7 +118,7 @@ end
 # Total impurity density is the sum of the isolated impurity filling factor
 # plus a correction δρ
 function ρ_Impurity(n, s::GrapheneSystem)
-    en = map((x, y) -> x.ϵ + x.U * y, s.imps, s.occ_num)
+    en = map(x -> x.ϵ, s.imps)
     return δρ_Impurity(n, s) + nF(en[n] - s.μ, s.T)
 end
 

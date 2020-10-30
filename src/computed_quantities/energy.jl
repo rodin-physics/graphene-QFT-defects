@@ -1,4 +1,4 @@
-include("scattering.jl")
+include("../defects/scattering.jl")
 
 ## Graphene Energy
 function F_G_Integrand(
@@ -13,7 +13,7 @@ function F_G_Integrand(
     Δ_ = Δ(atoms)
 
     prop_mat = propagator_matrix(z, map(x -> x.coord, atoms))
-    res = Matrix{Int}(I, n_atoms, n_atoms) .- prop_mat * Δ_ |> det |> log
+    res = Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_ |> det |> log
     # The factor of 2 is due to the two spins
     return (-2 * res)
 end
