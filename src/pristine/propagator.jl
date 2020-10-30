@@ -1,4 +1,4 @@
-include("types.jl")
+include("graphene_types.jl")
 
 @inline function Ω_Integrand(z, u, v, x::Float64)
     W = ((z / t)^2 - 1.0) / (4.0 * cos(x)) - cos(x)
