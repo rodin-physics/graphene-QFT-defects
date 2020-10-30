@@ -1,7 +1,6 @@
 include("../pristine/graphene_types.jl")
 
 ## Structures describing defects
-
 # Coupling for impurity states
 struct Coupling
     V::Float64              # Coupling to a graphene atom
@@ -32,40 +31,47 @@ struct GrapheneSystem
 end
 
 ## Manipulation functions
-
 # Setting up the graphene system
 function new_graphene_system()
     return GrapheneSystem(0.0, 0.0, ImpurityState[], PerturbedAtom[])
 end
 
+# Changing the temperature of an initialized system
 function set_T(s::GrapheneSystem, new_T::Float64)
     return GrapheneSystem(s.μ, new_T, s.imps, s.mod_atoms)
 end
 
+# Changing the chemical potential of an initialized system
 function set_μ(s::GrapheneSystem, new_μ::Float64)
     return GrapheneSystem(new_μ, s.T, s.imps, s.mod_atoms)
 end
 
+# Adding a new modified atom to an initialized system
 function add_mod_atom(s::GrapheneSystem, new_mod_atom::PerturbedAtom)
     return GrapheneSystem(s.μ, s.T, s.imps, push!(s.mod_atoms, new_mod_atom))
 end
 
+# Adding a new impurity to an initialized system
 function add_imp(s::GrapheneSystem, new_imp::ImpurityState)
     return GrapheneSystem(s.μ, s.T, push!(s.imps, new_imp), s.mod_atoms)
 end
 
+# Removing a modified atom from a system
 function remove_mod_atom(s::GrapheneSystem, ind::Int)
     return GrapheneSystem(s.μ, s.T, s.imps, deleteat!(s.mod_atoms, ind))
 end
 
+# Removing an impurity from a system
 function remove_imp(s::GrapheneSystem, ind::Int)
     return GrapheneSystem(s.μ, s.T, deleteat!(s.imps, ind), s.mod_atoms)
 end
 
+# Initialize an impurity
 function new_impurity(ϵ)
     return ImpurityState(ϵ, Coupling[])
 end
 
+# Add coupling to an existing impurity
 function add_coupling(imp::ImpurityState, V, coord)
     new_coup = Coupling(V, coord)
     if (coord in map(x -> x.coord, imp.coupling))
@@ -75,6 +81,7 @@ function add_coupling(imp::ImpurityState, V, coord)
     end
 end
 
+# Remove coupling from an impurity
 function remove_coupling(imp::ImpurityState, ind::Int)
     return ImpurityState(imp.ϵ, deleteat!(imp.coupling, ind))
 end
