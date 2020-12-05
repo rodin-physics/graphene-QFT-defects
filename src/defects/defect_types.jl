@@ -1,4 +1,4 @@
-include("../pristine/graphene_types.jl")
+include("../pristine/propagator.jl")
 
 ## Structures describing defects
 # Coupling for impurity states

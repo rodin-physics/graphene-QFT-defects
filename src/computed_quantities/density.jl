@@ -42,7 +42,7 @@ function δρ_Graphene(loc, s::GrapheneSystem)
             Inf,
             rtol = ν,
         )
-        return (res[1] / π)
+        return (res[1] / π)::Float64
     else
         res = quadgk(
             x ->

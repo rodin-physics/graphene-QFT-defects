@@ -1,5 +1,4 @@
 include("defect_types.jl")
-include("../pristine/propagator.jl")
 
 # A function that takes a list of impurities and another one of directly
 # modified atoms and returns a list of all the scattering atoms
