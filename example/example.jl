@@ -24,11 +24,11 @@ my_system = add_imp(my_system, imp2)
 my_system = remove_imp(my_system, 1)
 
 # Compute the local density in graphene
-δρ_Graphene(atom_move(graphene_A(), 1, 1), my_system)
+δρ_Graphene(graphene_A(1,1), my_system)
 
 # Change the doping of the system and then recompute the local density
 my_system = set_μ(my_system, -0.2)
-δρ_Graphene(atom_move(graphene_A(), 1, 1), my_system)
+δρ_Graphene(graphene_A(1,1), my_system)
 
 # Change the doping and the temperature
 my_system = set_μ(my_system, 0.9)
@@ -36,6 +36,3 @@ my_system = set_T(my_system, 1e-2)
 
 # Compute the density  at  the impurity
 ρ_Impurity(1, my_system)
-
-
-scattering_atoms(my_system.imps, my_system.mod_atoms)
