@@ -1,0 +1,389 @@
+    \documentclass[aps,prb,superscriptaddress,preprint,floatfix]{revtex4-1}
+\usepackage{graphicx}% Include figure files
+\usepackage{dcolumn}% Align table columns on decimal point
+\usepackage{bm}% bold math
+\usepackage{amsmath}
+
+\usepackage{color}
+\bibliographystyle{apsrev4-1}
+\usepackage{bm,graphicx,hyperref}
+\hypersetup{%
+  breaklinks = {true},
+  citecolor = {blue},
+  colorlinks = {true},
+  linkcolor = {red},
+}
+
+\begin{document}
+	
+\section{Hamiltonian}
+
+To describe an infinitely-large graphene system with multiple defects, we use the following Hamiltonian:
+%
+\begin{align}
+    \hat{H} &= \sum_{\mathbf{q}} c^\dagger_{\mathbf{q}}
+    \left(H_{0,\mathbf{q}}^G - \mu\right)
+    c_{\mathbf{q}}
+    +
+    \sum_{ k} g_{ k}^\dagger \left(\varepsilon_k - \mu\right)  g_{ k}
+    \nonumber
+    \\
+    &+
+    \sum_{ jk} 
+    \left[
+    c^\dagger_{\mathbf{R}_j}I_j V_{j,k} g_{ k} 
+    + 
+    g_{ k}^\dagger \left(V_{j,k}\right)^* I_j^T c_{\mathbf{R}_j}
+    \right]
+    \nonumber
+    \\
+    &+  
+    \sum_{jl} c_{\mathbf{R}_j}^\dagger I_j \Delta_{jl} I^T_lc_{\mathbf{R}_l}
+    \,.
+    \label{eqn:H_QFT}
+\end{align}
+%
+
+
+%
+\begin{table*}
+  \centering
+\begin{tabular}{ |c|m{10cm}| } 
+ \hline
+$H_{0,\mathbf{q}}^G$ & Pristine graphene Hamiltonian matrix
+ \\
+ \hline
+$\mu$ & Chemical potential
+\\ 
+ \hline 
+ $c^\dagger_{\mathbf{q}} = \begin{pmatrix} a^\dagger_{\mathbf{q}}&b^\dagger_{\mathbf{q}}\end{pmatrix}$ & Vector of the creation operators for the carbon $p_z$ orbitals for the two sublattices in momentum space. $c^\dagger_{\mathbf{R}}$ is the real-space counterpart
+ \\ 
+ \hline 
+ $g^\dagger_k$ & Creation operator for the impurity state of energy $\varepsilon_k$
+ \\
+ \hline
+ $\Delta_{jl}$ & Modified coupling/on-site energy for graphene
+ \\ 
+ \hline 
+ $V_{j,k}$ & Atom $j$'s interaction strength with the impurity state $k$
+ \\
+\hline 
+ $\Delta
+ = \begin{pmatrix}
+ 	\Delta_{11} & \Delta_{12}& \cdots
+ 	\\
+ 	\Delta_{21} & \Delta_{22}& \cdots
+ 	\\
+ 	\vdots & \vdots & \ddots
+ \end{pmatrix}$ & $M\times M$ matrix of couplings between carbon $p_z$ orbitals  \\ 
+ \hline 
+ $V= \begin{pmatrix}
+ 	V_{1,1} & V_{1,2}& \cdots
+ 	\\
+ 	V_{2,1} & V_{2,2}& \cdots
+ 	\\
+ 	\vdots & \vdots & \ddots
+ \end{pmatrix}$ & $M\times K$ matrix
+\\ 
+ \hline
+  $I_j^T = \begin{pmatrix} 1 & 0 \end{pmatrix}$ or $ \begin{pmatrix} 0 & 1 \end{pmatrix}$ & A vector for choosing the correct graphene sublattice
+   \\
+ \hline
+\end{tabular}
+  \caption{Table of quantities used in the Hamiltonian. Here, $K$ is the number of impurity states and $M$ is the number of graphene atoms affected by the defects.}
+  \label{tab:Reference}
+\end{table*}
+%
+
+The first line describes the pristine graphene system and the isolated impurities. The second line provides the coupling between the impurity states and graphene atoms at unit cells with coordinates $\mathbf{R}_j$. Importantly, the sum $j$ runs over \emph{all} the atoms impacted by the impurities, either by directly interacting with them or because the induced lattice deformation changes their coupling to other graphene atoms. Finally, the last line gives the perturbation of the graphene Hamiltonian due to the lattice deformation. As with the line above, the sum includes all the modified atoms.
+
+Using  $c^\dagger_\mathbf{R} = N^{-1/2}\sum_\mathbf{q}c^\dagger_\mathbf{q} e^{-i\mathbf{R}\cdot\mathbf{q}}$, where $N$ is the number of unit cells in the system, one gets
+%
+\begin{equation}
+    \sum_{j}
+    c^\dagger_{\mathbf{R}_j} I_j V_{j,k}
+    = 
+    \frac{1}{\sqrt{N}}
+    \sum_\mathbf{q}c^\dagger_{\mathbf{q}}
+    \underbrace{\left(\sum_{j}e^{-i\mathbf{R}_j\cdot\mathbf{q}} I_j V_{j,k}\right)}_{\Theta_\mathbf{q}^\dagger \mathbf{I} V_{,k}}\,,
+    \label{eqn:Coupling}
+\end{equation}
+%
+where $\Theta_\mathbf{q}$ is a column vector of $\mathbf{1}_{2\times 2} e^{i\mathbf{R}_j\cdot\mathbf{q}}$ for all $\mathbf{R}_j$, $\mathbf{I}$ is a diagonal matrix of $I_j$, and $V_{,k}$ is a column vector of $V_{j,k}$. Similarly,
+%
+\begin{align}
+	\sum_{jk} c_{\mathbf{R}_j}^\dagger I_j \Delta_{jk} I^T_kc_{\mathbf{R}_k}
+	=\frac{1}{N}\sum_{\mathbf{qq}'} c_{\mathbf{q}}^\dagger \Theta_{\mathbf{q}}^\dagger\mathbf{I}\Delta \mathbf{I}^T\Theta_{\mathbf{q}'}c_{\mathbf{q}'}\,.
+	\label{eqn:Delta}
+\end{align}
+%
+
+\section{Partition Function}
+
+Plugging Eqs.~\eqref{eqn:Coupling} and \eqref{eqn:Delta} into Eq.~\eqref{eqn:H_QFT}, one can translate the Hamiltonian into the imaginary-time action
+%
+\begin{align}
+    S &= \sum_{\omega_n\mathbf{qq}'} \bar\psi_{\omega_n\mathbf{q}}
+    \overbrace{
+    \left[\left(-i\omega_n-\mu\right) \delta_{\mathbf{qq}'}
+    + 
+    H^G_{\mathbf{qq}'} \right]}^{-G^{-1}_{i\omega_n + \mu, \mathbf{qq}'}}
+    \psi_{\omega_n\mathbf{q}'}
+    \nonumber
+    \\
+    &
+    +
+    \sum_{\omega_n k}\bar\gamma_{\omega_n,k} 
+    \overbrace{\left(-i\omega_n - \mu + \varepsilon_k \right)}^{-\Gamma_{0,i\omega_n + \mu, k}^{-1}} \gamma_{\omega_n,k}
+    \nonumber
+    \\
+    &
+    +
+    \frac{1}{\sqrt{N}}\sum_{\omega_n k \mathbf{q}} 
+    \left(
+    \bar\psi_{\omega_n,\mathbf{q}}
+    \Theta_\mathbf{q}^\dagger
+    \mathbf{I}V_{,k}
+    \gamma_{\omega_n,k}+
+    \bar\gamma_{\omega_n,k} 
+    V_{,k}^\dagger\mathbf{I}^T\Theta_\mathbf{q}
+    \psi_{\omega_n,\mathbf{q}}
+    \right)\,.
+    \label{eqn:S}
+\end{align}
+%
+Note that we have combined the $\mathbf{q}$-diagonal and non-diagonal portions of the graphene Hamiltonian into $ H^G_{\mathbf{qq}'}$. The quantity $\omega_n$ is the fermionic Matsubara frequency, and $\gamma$ and $\psi$ are Grassmann fields. Integrating $e^{-S}$ over all the fields gives the partition function
+%
+\begin{align}
+    \mathcal{Z} &= 
+    \prod_{\omega_n }
+    \left|-\beta G^{-1}_{i\omega_n+\mu}\right|
+    \left|-\beta\left(\Gamma^{-1}_{0,i\omega_n+\mu} - \frac{V^\dagger \mathbf{I}^T\Theta  G_{i\omega_n+\mu} \Theta^\dagger \mathbf{I} V}{N}\right)\right|
+    \nonumber
+    \\
+    &= 
+    \prod_{\omega_n }
+    \left|-\beta \Gamma^{-1}_{0,i\omega_n+\mu}\right|
+    \left|-\beta\left( G_{i\omega_n+\mu} ^{-1} -  \frac{\Theta^\dagger\mathbf{I}V\Gamma_{0,i\omega_n+\mu}V^\dagger \mathbf{I}^T\Theta  }{N}\right)\right|\,,
+    \label{eqn:Z}
+\end{align}
+%
+where $\Theta$ as a row vector of $\Theta_\mathbf{q}$. Defining a pristine graphene Green's function $G_{z}^0 = \left(z - H^G_0\right)^{-1}$ leads to
+%
+\begin{align}
+	G_{z} &= \left[\left(G_{z}^0\right)^{-1} - \frac{1}{N} \Theta^\dagger\mathbf{I}\Delta \mathbf{I}^T\Theta\right]^{-1}
+	=
+	G_{z}^0
+	+
+	\frac{1}{N} G_{z}^0\Theta^\dagger\mathbf{I}\Delta
+	\left( 1
+	-
+	\mathbf{I}^T\boldsymbol{\Xi}_{z}\mathbf{I}\Delta 
+	\right)^{-1}\mathbf{I}^T\Theta G_{z}^0\,,	
+\end{align}
+%
+where $\boldsymbol{\Xi}_{z} = \Theta G_{z}^0\Theta^\dagger / N$ with entries $\boldsymbol{\Xi}_{z}^{jk} = \Xi_{z}^{\mathbf{R}_j - \mathbf{R}_k}$ and
+%
+\begin{equation}
+    \Xi_z^\mathbf{R} = \frac{1}{N}\sum_\mathbf{q}G_{z\mathbf{q}}^0
+    e^{i \mathbf{R} \cdot\mathbf{q}}\,.
+    \label{eqn:Xi}
+\end{equation}
+%
+The derivation of $\Xi_z^\mathbf{R}$ is given below. $G_z$ is the graphene Green's function including the lattice deformation, but not the effects of the impurity states.
+
+In the parentheses of the first line of Eq.~\eqref{eqn:Z}, we identify the inverse of the full impurity Green's function, denoted by $\Gamma^{-1}_{z}$:
+%
+\begin{align}
+	\Gamma_{z} & = \left(
+    \Gamma^{-1}_{0,z}
+    - 
+   V^\dagger\Lambda_{z}V
+	\right)^{-1}
+	=
+	\Gamma_{0,z}
+	+
+	\Gamma_{0,z}
+    V^\dagger\Lambda_{z}
+	\left(
+	1
+     - V
+    \Gamma_{0,z}
+    V^T\Lambda_{z}
+	\right)^{-1}V\Gamma_{0,z}
+	\,,
+    \label{eqn:Gamma}
+    \\
+    \Lambda_{z} &=
+    \mathbf{I}^T\boldsymbol{\Xi}_{z}\mathbf{I}
+	\left[1+
+    \Delta
+	\left( 1
+	-
+	\mathbf{I}^T\boldsymbol{\Xi}_{z}\mathbf{I}\Delta 
+	\right)^{-1} \mathbf{I}^T\boldsymbol{\Xi}_{z}\mathbf{I}
+	\right]\,.
+	\label{eqn:Lambda}
+\end{align}
+%
+
+From the parentheses of the second line in Eq.~\eqref{eqn:Z}, we obtain the inverse of the full graphene Green's function, given by
+%
+\begin{align}
+	 \mathcal{G}_{z} & =\left[\left(G_{z}^0\right)^{-1} - \frac{1}{N} \Theta^\dagger\mathbf{I}\left(\Delta + V\Gamma_{0,z}V^\dagger
+	 \right)\mathbf{I}^T\Theta
+	 \right]^{-1}=
+	 G_{z}^0+
+	  \frac{1}{N} G_{z}^0\Theta^\dagger\mathbf{I} 
+	 D_{z}
+	 \mathbf{I}^T\Theta
+	 G_{z}^0\,,
+	 \label{eqn:Full_G}
+	 \\
+	 D_{z} &=\left[
+	\left(\Delta + V\Gamma_{0,z}V^\dagger
+	 \right)^{-1}
+	 -
+	\mathbf{I}^T
+	\boldsymbol{\Xi}_{z} \mathbf{I}
+	 \right]^{-1}\,.
+	 \label{eqn:D}
+\end{align}
+%
+
+Using Eq.~\eqref{eqn:Full_G}, it is possible to calculate the real-space graphene Green's function $\mathcal{G}_{i\omega_n + \mu,\mathbf{R}}^s = N^{-1}\sum_{\mathbf{qq}'} \langle \bar{\psi}^s_{\omega_n\mathbf{q}}\psi^s_{\omega_n\mathbf{q}'}\rangle e^{i\left(\mathbf{q}'-\mathbf{q}\right)\cdot\mathbf{R}}$, where $s$ denotes the sublattice and the correlation functions are the diagonal elements of the $\left[\mathcal{G}_{i\omega_n+\mu} \right]_{\mathbf{q}'\mathbf{q}}$ blocks:
+%
+\begin{align}
+	\mathcal{G}_{z,\mathbf{R}} 
+	 &=\Xi^\mathbf{0}_{z}
+	 +
+	\sum_{jk}
+	\Xi_{z}^{\mathbf{R} - \mathbf{R}_j}
+	  \left(\mathbf{I} 
+	 D_{z}
+	 \mathbf{I}^T
+	 \right)_{jk}
+	 \Xi_{z}^{\mathbf{R}_k - \mathbf{R}}
+	 =\Xi^\mathbf{0}_{z}
+	 +
+	 \begin{pmatrix}
+	 	\Xi_{z}^{\mathbf{R} - \mathbf{R}_1} & \cdots
+	 \end{pmatrix}
+	 \mathbf{I} 
+	 D_{z}
+	 \mathbf{I}^T
+	 \begin{pmatrix}
+	 	\Xi_{z}^{\mathbf{R}_1 - \mathbf{R}} \\ \vdots
+	 \end{pmatrix}\,.
+	 \label{eqn:Full_G_Real}
+\end{align}
+%
+
+\section{Occupation Number}
+
+The local density at $s$ sublattice at the unit cell at $\mathbf{R}$ is given by $\rho_{\sigma,\mathbf{R}} = \beta^{-1}\sum_{\omega_n}s^T \mathcal{G}_{i\omega_n + \mu,\sigma,\mathbf{R}}s$, where $s^T = \begin{pmatrix}
+	1 &0
+\end{pmatrix}$ or $\begin{pmatrix}
+	0&1
+\end{pmatrix}$. Since we are interested in variation of the charge density due to the perturbations of the pristine system, we concentrate on the second term of Eq.~\eqref{eqn:Full_G_Real} and define the perturbation-induced correction to the density
+%
+\begin{align}
+	\delta \rho_{\mathbf{R}}^s
+	 & =
+    \frac{1}{\beta}\sum_{\omega_n}
+	s^T\begin{pmatrix}
+	 	\Xi_{i\omega_n + \mu}^{\mathbf{R} - \mathbf{R}_1} & \cdots
+	 \end{pmatrix}
+	 \mathbf{I} 
+	 D_{i\omega_n + \mu}
+	 \mathbf{I}^T
+	 \begin{pmatrix}
+	 	\Xi_{i\omega_n + \mu}^{\mathbf{R}_1 - \mathbf{R}} \\ \vdots
+	 \end{pmatrix}
+	s
+	\,.
+	\label{eqn:Delta_rho}
+\end{align}
+%
+
+Similarly, it is possible to calculate the impurity occupation number from Eq.~\eqref{eqn:Gamma}:
+%
+\begin{equation}
+    \rho_{k}= \frac{1}{\beta}\sum_{\omega_n} \Gamma_{i\omega_n + \mu, k}  \,.
+    \label{eqn:rho_imp}
+\end{equation}
+%
+
+
+By taking the $k$th diagonal entry of $-2\mathrm{Im}\left[\Gamma_{\omega + i0^+}\right]$ and $-2\mathrm{Im}\left[\mathcal{G}_{\omega+i0^+,\mathbf{R}}^s\right]$, we obtain the spectral functions for the $k$th impurity and the corresponding carbon atom, respectively. 
+
+At zero temperature, the summation over the Matsubara frequencies can be replaced by an integral: $\beta^{-1}\sum_{\omega_n} f(i\omega_n + \mu)\rightarrow (2\pi)^{-1} \int d\omega f(i\omega + \mu)$. For finite temperatures, we get $\beta^{-1}\sum_{\omega_n} f(i\omega_n + \mu)\rightarrow -2 \mathrm{Im}\left[\int d\omega f(\omega + i0 + \mu)n_F(\omega)\right]$, where $n_F(\omega)$ is the Fermi-Dirac distribution function.
+
+\section{Graphene Propagator}
+\label{sec:Propagator}
+
+To compute $\Xi_z^\mathbf{R}$, we first introduce
+%
+\begin{equation}
+	\Omega^{u,v}_z =
+	\frac{1}{N}\sum_{\mathbf{q}\in\mathrm{BZ}}
+	\frac{
+		e^{i\mathbf{q}\cdot \left(u\mathbf{d}_1 + v\mathbf{d}_2\right)}
+	}
+	{z^2 - t^2\left| f_{1,\mathbf{q}}\right|^2}
+	\label{eqn:Omega_R}
+\end{equation}
+%
+with $ u\mathbf{d}_1 + v\mathbf{d}_2 = \frac{d}{2}\left(u - v, \sqrt{3}\left(u+v\right)\right)$ and $t = 2.8$~eV as the nearest-neighbor hopping energy. Using $\mathbf{q}\cdot \left(u\mathbf{d}_1 + v\mathbf{d}_2\right)  = \frac{d}{2}\left[\left(u - v\right)q_x + \sqrt{3}\left(u+v\right)q_y\right]$ and turning the momentum sum into an integral yields
+%
+\begin{align}
+	\Omega^{u,v}\left(z\right) 
+	& = \frac{1}{\left(2\pi\right)^2}\oint dx \oint dy
+	\frac
+	{e^{i \left[\left(u - v\right)x + \left(u+v\right)y\right]}}
+	{z^2 - t^2\left(1 + 4\cos^2 x + 4 \cos x\cos y \right)}\,.
+	\label{eqn:Omega_R_2}
+\end{align}
+%
+From
+%
+\begin{equation}
+	\oint d\theta \frac{e^{il\theta}}{w-\cos\theta} = 2\pi \frac{\left(w - \sqrt{w - 1}\sqrt{w + 1}\right)^{|l|}}{\sqrt{w - 1}\sqrt{w + 1}}\,,
+	\label{eqn:Ang_Int}
+\end{equation}
+%
+we get
+%
+\begin{align}
+	\Omega^{u,v}_z &= \frac{1}{2\pi}\frac{1}{4t^2}
+	\oint dx \frac{e^{i\left(u - v\right)x}}{\cos x}\frac{\left(W - \sqrt{W - 1}\sqrt{W + 1}\right)^{|u+v|}}{\sqrt{W - 1}\sqrt{W + 1}}\,,
+	\label{eqn:Omega_R_3}
+	\\
+	W &= \frac{\frac{z^2}{t^2}-1}{4\cos x}-\cos x\,.
+	\label{eqn:W}
+\end{align}
+%
+Finally, $\Xi^{\mathbf{R}}_z$ for $\mathbf{R} = u\mathbf{d}_1 + v\mathbf{d}_2$ can be written as
+%
+\begin{align}
+	\Xi^{\mathbf{R}}_z 
+	&=
+	\begin{pmatrix}
+		z\Omega^{u,v}_z
+		&
+		- t\left[\Omega^{u,v}_z + \Omega^{u,v}_{+,z} \right]
+		\\
+		- t\left[\Omega^{u,v}_z + \Omega^{u,v}_{-,z}\right]
+		&
+		z\Omega^{u,v}_z
+	\end{pmatrix}\,,
+	\\
+	\Omega^{u,v}_{\pm,z}
+	&= 
+	 \frac{1}{2\pi}\frac{1}{4t^2}
+	\oint dx \,2e^{i\left(u - v\right)x}\frac{\left(W - \sqrt{W - 1}\sqrt{W + 1}\right)^{|u+v\pm 1|}}{\sqrt{W - 1}\sqrt{W + 1}}
+\,.
+\end{align}
+%
+
+\end{document}
