@@ -8,9 +8,9 @@ function spectral_graphene(ω, loc, s::GrapheneSystem)
 end
 
 function spectral_impurity(ω, n, s::GrapheneSystem)
-    Γ0_inv = map((x, y) -> ω + 1im * η - x.ϵ - x.U * y, s.imps, s.occ_num)
+    Γ0_inv = map(x -> ω + 1im * η - x.ϵ, s.imps)
     pristine_spectral = -1 / (Γ0_inv[n]) / π |> imag
     correction_spectral =
-        -δρ_Impurity_Integrand(n, ω + 1im * η, s.imps, s.occ_num, s.mod_atoms) / π |> imag
+        -δρ_Impurity_Integrand(n, ω + 1im * η, s.imps, s.mod_atoms) / π |> imag
     return (pristine_spectral + correction_spectral)
 end
