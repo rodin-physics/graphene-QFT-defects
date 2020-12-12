@@ -40,7 +40,7 @@ To take advantage of parallel computation when computing the induced charge dens
 
 #### Plotting
 
-When one performs the lattice-wide calculations, as described above, the output is saved to two files. These files only contain the values at the lattice sites without the atom coordinates. To plot these results, further processing is necessary. A function called `Data_Process(lattice_A_data, lattice_B_data)` in `src\analysis\dataprocess.jl` takes the data for the two sublattices and combines it by matching the data to the appropriate spatial coordinate, making it possible to plot the results. For more detail, see `calculation\rho_Plotter.jl`.
+When one performs the lattice-wide calculations, as described above, the output is saved to two files. These files only contain the values at the lattice sites without the atom coordinates. To plot these results, further processing is necessary. A function called `Data_Process(lattice_A_data, lattice_B_data)` in `src/analysis/dataprocess.jl` takes the data for the two sublattices and combines it by matching the data to the appropriate spatial coordinate, making it possible to plot the results. For more detail, see `calculation/rho_Plotter.jl`.
 
 #### Fourier Transform
 
