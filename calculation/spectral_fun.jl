@@ -1,6 +1,7 @@
-include("../src/spectral.jl")
+include("../src/computed_quantities/spectral.jl")
 #
-# sys = new_graphene_system()
+
+
 # sys = set_μ(sys, 0.2)
 # imp1 = new_impurity(2.5, 0.0)
 # imp1 = add_coupling(imp1, -8.5, 0.5 * t, graphene_A(0,0))
@@ -22,8 +23,7 @@ include("../src/spectral.jl")
 #
 #
 #
-# # ωs = range(-3 * t, 3 * t, length = 400)
-# # # sp_fun = map(x -> spectral_impurity(x, 1, sys), ωs)
+
 # # sp_fun = map(x -> spectral_graphene(x,atom_move(graphene_B(), 1, 1), sys), ωs)
 # # # spectral_graphene(1.1, graphene_B(), sys)
 # #

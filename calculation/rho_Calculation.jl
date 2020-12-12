@@ -1,4 +1,10 @@
 using Distributed
+using ProgressMeter
+
+procs = 5;
+if nprocs() < procs
+    addprocs(procs - nprocs())
+end
 
 @everywhere include("calculation/computation_settings.jl")
 
