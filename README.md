@@ -8,6 +8,8 @@ For a more detailed discussion, see https://doi.org/10.1103/PhysRevB.102.195416
 
 ## Use
 
+### Basics
+
 This package can calculate the electronic density at impurity states and graphene atoms, see [here](https://github.com/rodinalex/graphene-QFT-defects/blob/main/example/example.jl).
 
 The general flow goes as follows:
@@ -21,9 +23,18 @@ The general flow goes as follows:
 8. Finally, one can calculate the charge densities. To get the defect-induced charge density in graphene, call `δρ_Graphene(coord, my_system)`, where coord is the coordinate of the atom. For the impurities, call `ρ_All(my_system)` if all the occupation numbers are desired, or `ρ_Impurity(n, my_system)` to only get the occupation number for the `n`'th impurity.
 9. The spectral function at energy ω can be obtained by calling `spectral_graphene(ω, coord, my_system)` or `spectral_impurity(ω, n, my_system)`
 
+### Scripts
+
+To facilitate the use of the package, a few useful files can be found in the `calculation` folder. To take advantage of parallel computation when computing the induced charge density over many sites
+1. Start by defining the system in the `computations_settings.jl` file. This includes creating a `new_graphene_system()` and populating it with defects, as outlined above
+2. In the same file, define the size of the system by specifying how many unit vectors it spans by setting `nPts` to a desired value. This means that the lattice will go from -`nPts` to +`nPts` for each of the unit vectors so that the total number of points on the lattice to be computed will then be 2 x (2`nPts`+1) x (2`nPts`+1). The "2" in the front originates from the two sublattices.
+3. In `rho_calculation.jl`, define the number of workers to be used in the parallel calculation by setting `procs` to a desired value.
+4. Make sure that the targed directory to save the output exists and run the script! The induced density will be calculated at every lattice point and saved in two files, one for each sublattice.
+
+### Analysis and Plotting
+
 ## ToDo
 
 1. Implement the energy calculation
 2. Fix up the Fourier Transform part
 3. Write up the plotting explanation
-4. Write up the lattice explanation
