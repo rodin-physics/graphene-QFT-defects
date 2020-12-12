@@ -3,7 +3,7 @@ include("density.jl")
 function spectral_graphene(ω, loc, s::GrapheneSystem)
     pristine_spectral = -ω * Ω(ω + 1im * η, 0, 0) / π |> imag
     correction_spectral =
-        -δρ_Graphene_Integrand(loc, ω + 1im * η, s.imps, s.occ_num, s.mod_atoms) / π |> imag
+        -δρ_Graphene_Integrand(loc, ω + 1im * η, s.imps, s.mod_atoms) / π |> imag
     return (pristine_spectral + correction_spectral)
 end
 
