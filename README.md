@@ -26,3 +26,4 @@ The general flow goes as follows:
 1. Implement the energy calculation
 2. Fix up the Fourier Transform part
 3. Write up the plotting explanation
+4. Write up the lattice explanation
