@@ -1,4 +1,5 @@
 include("graphene_types.jl")
+include("tb.jl")
 
 @inline function Ω_Integrand(z, u, v, x::Float64)
     W = ((z / t)^2 - 1.0) / (4.0 * cos(x)) - cos(x)
@@ -80,3 +81,39 @@ function propagator_matrix(z, Coords::Vector{GrapheneCoord})
     end
     return out
 end
+
+
+## Full Hamiltonian
+
+@inline function G_z(q, z)
+    return inv([z 0; 0 z] - Hπ(q))
+end
+
+function Ξ(a_l::GrapheneCoord, a_m::GrapheneCoord, z)
+    if a_l.sublattice == a_m.sublattice
+        function integrand(x, f)
+            tmp = G_z([x[1] * 4 * π / d, x[2] * 4 * π / d / √(3)], z)[1, 1]
+            f[1], f[2] = reim(tmp)
+        end
+        result = cuhre(integrand, 4, 2, rtol = ν, maxevals = nevals)
+        return (result[1][1] + im * result[1][2])
+    elseif ([a_l.sublattice, a_m.sublattice] == ["●", "○"])
+        function integrand(x, f)
+            tmp = G_z([x[1] * 4 * π / d, x[2] * 4 * π / d / √(3)], z)[1, 2]
+            f[1], f[2] = reim(tmp)
+        end
+        result = cuhre(integrand, 4, 2, rtol = ν, maxevals = nevals)
+        return (result[1][1] + im * result[1][2])
+    elseif ([a_l.sublattice, a_m.sublattice] == ["○", "●"])
+        function integrand(x, f)
+            tmp = G_z([x[1] * 4 * π / d, x[2] * 4 * π / d / √(3)], z)[2, 1]
+            f[1], f[2] = reim(tmp)
+        end
+        result = cuhre(integrand, 4, 2, rtol = ν, maxevals = nevals)
+        return (result[1][1] + im * result[1][2])
+    else
+        error("Illegal sublattice parameter")
+    end
+end
+
+# @time Ξ(graphene_A(0, 0), graphene_A(0, 0), 0.4 + 0.0001im)
