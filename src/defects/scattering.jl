@@ -2,16 +2,26 @@ include("defect_types.jl")
 
 # A function that takes a list of impurities and another one of directly
 # modified atoms and returns a list of all the scattering atoms
-function scattering_atoms(imps::Vector{ImpurityState}, mod_atoms::Vector{PerturbedAtom})
+function scattering_atoms(
+    imps::Vector{ImpurityState},
+    mod_atoms::Vector{PerturbedAtom},
+)
     # Start by obtaining the atoms that are coupled to the impurities
     # Get all the couplings from the impurity states
     all_couplings = collect(Iterators.flatten(map(x -> x.coupling, imps)))
     # all_couplings = reduce(vcat, map(x -> x.coupling, imps))
     # Turn the couplings into PerturbedAtoms and get the unique hosts
     hosts = map(x -> PerturbedAtom(0.0, 0.0, x.coord), all_couplings) |> unique
-    # Next, we get the neighbors of mod_atoms
-    neighbor_coords =
-        collect(Iterators.flatten(map(neighbors, map(x -> x.coord, mod_atoms))))
+    # Next, we get the neighbors of mod_atoms. NOTE: the neighbors are only
+    # necessary for mod_atoms whose δt ≠ 0:
+    mod_atoms_finite_δt = filter(x -> x.δt ≠ 0, mod_atoms)
+    # Get the neighbor coordinates of the mod_atoms_finite_δt and turn those
+    # neighbors into PerturbedAtoms
+    neighbor_coords = collect(
+        Iterators.flatten(
+            map(neighbors, map(x -> x.coord, mod_atoms_finite_δt)),
+        ),
+    )
     all_neighbors = map(x -> PerturbedAtom(0.0, 0.0, x), neighbor_coords)
     # We combine the hosts with the neighbors and get a unique list
     hosts_neighbors = vcat(hosts, all_neighbors) |> unique
@@ -32,8 +42,11 @@ function Δ(scatterers::Vector{PerturbedAtom})
     atoms_M_T = permutedims(atoms_M)
     # Check if there are modified bonds between pairs of atoms. If both atoms
     # have modified bonds with their neighbors, take the larger of the two
-    Δ_ =
-        map((x, y) -> (x.coord in neighbors(y.coord)) * max(x.δt, y.δt), atoms_M, atoms_M_T)
+    Δ_ = map(
+        (x, y) -> (x.coord in neighbors(y.coord)) * max(x.δt, y.δt),
+        atoms_M,
+        atoms_M_T,
+    )
     # Add the on-site potential for the dopants
     Δ_ = Δ_ .+ Diagonal(map(x -> x.ϵ, scatterers))
     return Δ_
