@@ -1,9 +1,12 @@
-include("../src/computed_quantities/density.jl")
+include("../src/computed_quantities/spectral.jl")
 
 # Create the system
 sys = new_graphene_system()
-sys = set_μ(sys, -0.4)
-# 
+N_dopant = PerturbedAtom(-2.5 * t, 0.5, graphene_A(0, 0))
+# N_dopant = PerturbedAtom(-2.0 * t, 0.2, graphene_A(0, 0))
+sys = add_mod_atom(sys, N_dopant)
+
+ωs = range(-1, 1, length = 100)
 # N_dopant = PerturbedAtom(-2.0, 0.0, graphene_A(0,0))
 # sys = add_mod_atom(sys, N_dopant)
 

@@ -1,7 +1,11 @@
-include("../src/computed_quantities/spectral.jl")
+@everywhere include("calculation/computation_settings.jl")
 #
 
+sp_fun = @showprogress pmap(x -> spectral_graphene_17(x, graphene_A(0, 0), sys), ωs)
+plot(ωs, sp_fun)
 
+writedlm("Data/Check.dat", sp_fun)
+# plot!(data[:, 1] .+ 1.4442 .+ 0.35, data[:, 3] .* 0.5)
 # sys = set_μ(sys, 0.2)
 # imp1 = new_impurity(2.5, 0.0)
 # imp1 = add_coupling(imp1, -8.5, 0.5 * t, graphene_A(0,0))
@@ -23,7 +27,7 @@ include("../src/computed_quantities/spectral.jl")
 #
 #
 #
-
+# @time spectral_graphene_17(.2, graphene_A(0, 0), sys)
 # # sp_fun = map(x -> spectral_graphene(x,atom_move(graphene_B(), 1, 1), sys), ωs)
 # # # spectral_graphene(1.1, graphene_B(), sys)
 # #
