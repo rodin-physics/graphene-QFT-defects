@@ -74,8 +74,14 @@ function δρ_Graphene(loc, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Graphene_Integrand(loc, x + μ + 1im * η, imps, mod_atoms)) *
-                nF(x, T),
+                -imag(
+                    δρ_Graphene_Integrand(
+                        loc,
+                        x + μ + 1im * η,
+                        imps,
+                        mod_atoms,
+                    ),
+                ) * nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
@@ -100,7 +106,10 @@ function δρ_Impurity_Integrand(
 
     Λ =
         prop_mat .+
-        prop_mat * Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_) * prop_mat
+        prop_mat *
+        Δ_ *
+        inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_) *
+        prop_mat
 
     Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
     res =
@@ -133,8 +142,9 @@ function δρ_Impurity(n, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, mod_atoms)) *
-                nF(x, T),
+                -imag(
+                    δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, mod_atoms),
+                ) * nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
