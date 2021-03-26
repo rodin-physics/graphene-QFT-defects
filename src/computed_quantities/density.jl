@@ -27,6 +27,34 @@ function δρ_Graphene_Integrand(
 
 end
 
+# Integrand used to calculate the local density in graphene using the 17
+# parameter TB
+function δρ_Graphene_Integrand_17(
+    loc::GrapheneCoord,
+    z,
+    imps::Vector{ImpurityState},
+    mod_atoms::Vector{PerturbedAtom},
+)
+    atoms = scattering_atoms(imps, mod_atoms)
+    n_atoms = length(atoms)
+    prop_mat = propagator_matrix_17(z, map(x -> x.coord, atoms))
+    PropVectorR = map(x -> propagator_17(x.coord, loc, z), atoms)
+    Δ_ = Δ(atoms)
+    if length(imps) != 0
+        V_ = V(atoms, imps)
+        Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
+        D =
+            (Δ_ .+ V_ * Γ0 * transpose(V_)) * inv(
+                Diagonal(ones(n_atoms, n_atoms)) .-
+                prop_mat * (Δ_ .+ V_ * Γ0 * transpose(V_)),
+            )
+    else
+        D = Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_)
+    end
+    return (transpose(PropVectorR)*D*PropVectorR)[1]
+
+end
+
 # Local density function in graphene. For T = 0, we integrate along the
 # imaginary axis. Otherwise, we perform a contour integration to enclose the
 # Matsubara frequencies.
@@ -46,8 +74,14 @@ function δρ_Graphene(loc, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Graphene_Integrand(loc, x + μ + 1im * η, imps, mod_atoms)) *
-                nF(x, T),
+                -imag(
+                    δρ_Graphene_Integrand(
+                        loc,
+                        x + μ + 1im * η,
+                        imps,
+                        mod_atoms,
+                    ),
+                ) * nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
@@ -72,7 +106,10 @@ function δρ_Impurity_Integrand(
 
     Λ =
         prop_mat .+
-        prop_mat * Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_) * prop_mat
+        prop_mat *
+        Δ_ *
+        inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_) *
+        prop_mat
 
     Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
     res =
@@ -105,8 +142,9 @@ function δρ_Impurity(n, s::GrapheneSystem)
     else
         res = quadgk(
             x ->
-                -imag(δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, mod_atoms)) *
-                nF(x, T),
+                -imag(
+                    δρ_Impurity_Integrand(n, x + μ + 1im * η, imps, mod_atoms),
+                ) * nF(x, T),
             -Inf,
             Inf,
             rtol = ν,
