@@ -27,20 +27,20 @@ The general flow goes as follows:
 
 To facilitate the use of the package, a few useful files can be found in the `calculation` folder.
 
-#### Density
+#### Density and Spectral Function Maps
 To take advantage of parallel computation when computing the induced charge density over many sites
 1. Start by defining the system in the `computations_settings.jl` file. This includes creating a `new_graphene_system()` and populating it with defects, as outlined above
 2. In the same file, define the size of the system by specifying how many unit vectors it spans by setting `nPts` to a desired value. This means that the lattice will go from -`nPts` to +`nPts` for each of the unit vectors so that the total number of points on the lattice to be computed will then be 2 x (2`nPts`+1) x (2`nPts`+1). The "2" in the front originates from the two sublattices.
-3. In `rho_calculation.jl`, define the number of workers to be used in the parallel calculation by setting `procs` to a desired value.
+3. In `rho_calculation.jl` (for the density) or `spectral_calculation.jl` (for the spectral function), define the number of workers to be used in the parallel calculation by setting `procs` to a desired value.
 4. Make sure that the targed directory to save the output exists and run the script! The induced density will be calculated at every lattice point and saved to two files, one for each sublattice.
 
-#### Spectral function
+#### Atom-resolved Spectral function
 
 ### Analysis and Plotting
 
 #### Plotting
 
-When one performs the lattice-wide calculations, as described above, the output is saved to two files. These files only contain the values at the lattice sites without the atom coordinates. To plot these results, further processing is necessary. A function called `Data_Process(lattice_A_data, lattice_B_data)` in `src/analysis/dataprocess.jl` takes the data for the two sublattices and combines it by matching the data to the appropriate spatial coordinate, making it possible to plot the results. For more detail, see `calculation/rho_Plotter.jl`.
+When one performs the lattice-wide calculations, as described above, the output is saved to two files. These files only contain the values at the lattice sites without the atom coordinates. To plot these results, further processing is necessary. A function called `Data_Process(lattice_A_data, lattice_B_data)` in `src/analysis/dataprocess.jl` takes the data for the two sublattices and combines it by matching the data to the appropriate spatial coordinate, making it possible to plot the results. For more detail, see `calculation/lattice_Plotter.jl`.
 
 #### Fourier Transform
 
