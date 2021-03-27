@@ -1,7 +1,7 @@
 using Cuba
 using DelimitedFiles
 using LinearAlgebra
-using Plots
+using ProgressMeter
 using QuadGK
 using Statistics
 

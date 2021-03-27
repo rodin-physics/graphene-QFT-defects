@@ -28,4 +28,4 @@ D1S = repeat(d1s, 1, 2 * nPts + 1);
 D2S = repeat(d2s', 2 * nPts + 1, 1);
 
 # Energy for spectral function slices
-ω_slice = 0.3;
+ω_slice = 0.4;

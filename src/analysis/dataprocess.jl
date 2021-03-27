@@ -36,3 +36,9 @@ function Data_Process(A_Lattice, B_Lattice)
 
     return [XS YS dta]
 end
+
+# Fourier Transform
+
+function FT_component(qx, qy, ρ, XS, YS)
+    res = sum(map((x, y, z) -> exp(1im * (x * qx + y * qy)) * z, XS, YS, ρ))
+end

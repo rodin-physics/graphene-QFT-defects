@@ -1,12 +1,11 @@
 using Distributed
-using ProgressMeter
 
-procs = 5;
+procs = 4;
 if nprocs() < procs
     addprocs(procs - nprocs())
 end
 
-@everywhere include("calculation/computation_settings.jl")
+@everywhere include("computation_settings.jl")
 
 # Calculation
 @everywhere function f_A_Sublattice(x1, x2)
