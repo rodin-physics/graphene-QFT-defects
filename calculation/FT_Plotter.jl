@@ -29,3 +29,4 @@ ax =
 
 hm = heatmap!(qx, qy, angle.(FT_res), colormap = :oslo)
 fig
+save("FT_phase_04eV_1N.png", fig)

@@ -14,7 +14,6 @@ end
         x -> Ω_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
         2.0 * π,
-        atol = α,
     ))[1])
 end
 
@@ -32,7 +31,6 @@ end
         x -> Ωp_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
         2.0 * π,
-        atol = α,
     ))[1])
 end
 
@@ -50,7 +48,6 @@ end
         x -> Ωn_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
         2.0 * π,
-        atol = α,
     ))[1])
 end
 
