@@ -1,5 +1,7 @@
 using CairoMakie
+using GLMakie
 
+CairoMakie.activate!()
 include("../src/analysis/dataprocess.jl")
 
 A_Lattice = readdlm("Data/Spectral/spectral_A.dat")
@@ -10,12 +12,6 @@ data = Data_Process(A_Lattice, B_Lattice)
 XS = data[:, 1]
 YS = data[:, 2]
 ρ = data[:, 3]
-
-# ρ = ρ * 1e4;
-#
-# bound = 1e-4;
-# bound = bound * 1e4;
-
 
 fig = Figure(resolution = (1800, 1800))
 ax =
@@ -43,13 +39,12 @@ sc = scatter!(
         color = ρ .- ρ[1],
         strokewidth = 0,
         marker = :circle,
-        markersize = 1,
+        markersize = 1.0,
         colormap = :coolwarm,
         colorrange = (-.001, .001),
 )
-xlims!(ax, (-100, 100))
-ylims!(ax, (-100, 100))
+xlims!(ax, (-200, 200))
+ylims!(ax, (-200, 200))
 fig
-save("Test.pdf", fig)
-median(ρ)
-ρ .- ρ[1]
+
+save("Spectral_04eV_1N.png", fig)

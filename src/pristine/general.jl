@@ -6,10 +6,10 @@ using QuadGK
 using Statistics
 
 ## Parameters
-const ν = 1e-2;     # Small number for relative tolerance
-const α = 1e-8;     # Small number for absolute tolerance
+const ν = 1e-6;     # Small number for relative tolerance
+const α = 1e-10;     # Small number for absolute tolerance
 const η = 1e-2;     # Small number for moving the contour off the real axis
-const nevals = 1e6; # Maximum number of evaluations in integrals
+const nevals = 1e8; # Maximum number of evaluations in integrals
 
 # Graphene hopping integral in eV and lattice vectors in Angstroms
 const t = 2.8;
