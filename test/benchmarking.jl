@@ -13,13 +13,13 @@ imp2 = new_impurity(1.0)
 # Add couplings to these impurities
 imp1 = add_coupling(imp1, 2, graphene_A(0, 0))
 imp2 = add_coupling(imp2, 2, graphene_A(2, 2))
-
+my_system
 # Add the impurities to the system
 my_system = add_imp(my_system, imp1)
 my_system = add_imp(my_system, imp2)
 
 # Compute the local density in graphene
-δρ_Graphene(graphene_A(1, 1), my_system)
+@time δρ_Graphene(graphene_A(1, 1), my_system)
 
 # Remove the first impurity
 my_system = remove_imp(my_system, 1)

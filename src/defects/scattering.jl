@@ -69,3 +69,26 @@ function V(scatterers::Vector{PerturbedAtom}, imps::Vector{ImpurityState})
     Vj_vecs = map(ii -> Vj(scatterers, ii), imps)
     return reduce(hcat, Vj_vecs)::Array{Float64,2}
 end
+
+function scattering_matrix(
+    z,
+    imps::Vector{ImpurityState},
+    atoms::Vector{PerturbedAtom},
+)
+
+    n_atoms = length(atoms)
+    prop_mat = propagator_matrix(z, map(x -> x.coord, atoms))
+    Δ_ = Δ(atoms)
+    if length(imps) != 0
+        V_ = V(atoms, imps)
+        Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
+        D =
+            (Δ_ .+ V_ * Γ0 * transpose(V_)) * inv(
+                Diagonal(ones(n_atoms, n_atoms)) .-
+                prop_mat * (Δ_ .+ V_ * Γ0 * transpose(V_)),
+            )
+    else
+        D = Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_)
+    end
+    return D
+end

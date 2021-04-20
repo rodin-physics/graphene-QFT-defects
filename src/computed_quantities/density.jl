@@ -1,6 +1,6 @@
 include("../defects/scattering.jl")
 
-# Integrand used to calculate the local density in graphene
+# Integrand used to calculate the local density correction in graphene
 function δρ_Graphene_Integrand(
     loc::GrapheneCoord,
     z,
@@ -8,50 +8,20 @@ function δρ_Graphene_Integrand(
     mod_atoms::Vector{PerturbedAtom},
 )
     atoms = scattering_atoms(imps, mod_atoms)
-    n_atoms = length(atoms)
-    prop_mat = propagator_matrix(z, map(x -> x.coord, atoms))
+    D = scattering_matrix(z, imps, atoms)
+
+    neighbors_ = neighbors(loc)
+    # Self-propagator
     PropVectorR = map(x -> propagator(x.coord, loc, z), atoms)
-    Δ_ = Δ(atoms)
-    if length(imps) != 0
-        V_ = V(atoms, imps)
-        Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
-        D =
-            (Δ_ .+ V_ * Γ0 * transpose(V_)) * inv(
-                Diagonal(ones(n_atoms, n_atoms)) .-
-                prop_mat * (Δ_ .+ V_ * Γ0 * transpose(V_)),
-            )
-    else
-        D = Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_)
-    end
-    return (transpose(PropVectorR)*D*PropVectorR)[1]
+    self_prop = (transpose(PropVectorR)*D*PropVectorR)[1]
+    # Neighbor propagator
+    PropVectorL =
+        map(y -> map(x -> propagator(x.coord, y, z), atoms), neighbors_) |>
+        sum |>
+        transpose
+    neighbor_prop = (PropVectorL*D*PropVectorR)[1]
 
-end
-
-# Integrand used to calculate the local density in graphene using the 17
-# parameter TB
-function δρ_Graphene_Integrand_17(
-    loc::GrapheneCoord,
-    z,
-    imps::Vector{ImpurityState},
-    mod_atoms::Vector{PerturbedAtom},
-)
-    atoms = scattering_atoms(imps, mod_atoms)
-    n_atoms = length(atoms)
-    prop_mat = propagator_matrix_17(z, map(x -> x.coord, atoms))
-    PropVectorR = map(x -> propagator_17(x.coord, loc, z), atoms)
-    Δ_ = Δ(atoms)
-    if length(imps) != 0
-        V_ = V(atoms, imps)
-        Γ0 = map(x -> z - x.ϵ, imps) |> Diagonal |> inv
-        D =
-            (Δ_ .+ V_ * Γ0 * transpose(V_)) * inv(
-                Diagonal(ones(n_atoms, n_atoms)) .-
-                prop_mat * (Δ_ .+ V_ * Γ0 * transpose(V_)),
-            )
-    else
-        D = Δ_ * inv(Diagonal(ones(n_atoms, n_atoms)) .- prop_mat * Δ_)
-    end
-    return (transpose(PropVectorR)*D*PropVectorR)[1]
+    return (self_prop + P * neighbor_prop)
 
 end
 
