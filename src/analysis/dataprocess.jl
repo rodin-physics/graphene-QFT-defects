@@ -7,8 +7,6 @@ include("../pristine/general.jl")
 function Data_Process(A_Lattice, B_Lattice)
     sz = size(A_Lattice)
     nPts = floor(Int, (sz[1] - 1) / 2)
-    # Lattice shift between the two sublattices
-    latticeShift = -1 / √(3) * 2.46
     # Arrays
     d1s = -nPts:1:nPts # d1 vectors
     d2s = -nPts:1:nPts # d2 vectors
