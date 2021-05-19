@@ -16,6 +16,9 @@ const P = 0.065;
 const d = 2.46;
 const d1 = d .* [+1, √(3)] ./ 2;
 const d2 = d .* [-1, √(3)] ./ 2;
+const a0 = 0.529;
+# Lattice shift between the two sublattices
+const lattice_shift = -1 / √(3) * d
 
 const Γ = [0, 0];
 const K = [2 * pi / 3 / d, 2 * pi / sqrt(3) / d];
@@ -34,7 +37,6 @@ end
 function Overlap(q)
     # Phase terms
     f1 = 1 + exp(1im * sum(d1 .* q)) + exp(1im * sum(d2 .* q))
-
     return ([
         1 (P*f1)
         conj(P * f1) 1
