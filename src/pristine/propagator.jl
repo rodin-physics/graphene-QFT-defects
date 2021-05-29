@@ -1,7 +1,8 @@
 include("graphene_types.jl")
 
+# Propagator integrals including the Overlap: bare hopping t -> t + z * P
 @inline function Ω_Integrand(z, u, v, x::Float64)
-    t = t0 + z * P
+    t = t0
     W = ((z / t)^2 - 1.0) / (4.0 * cos(x)) - cos(x)
     return (
         exp(1.0im * (u - v) * x) / cos(x) *
@@ -10,7 +11,7 @@ include("graphene_types.jl")
 end
 
 @inline function Ω(z, u, v)
-    t = t0 + z * P
+    t = t0
     return ((quadgk(
         x -> Ω_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
@@ -19,7 +20,7 @@ end
 end
 
 @inline function Ωp_Integrand(z, u, v, x::Float64)
-    t = t0 + z * P
+    t = t0
     W = ((z / t)^2 - 1.0) / (4.0 * cos(x)) - cos(x)
     return (
         2 *
@@ -29,7 +30,7 @@ end
 end
 
 @inline function Ωp(z, u, v)
-    t = t0 + z * P
+    t = t0
     return ((quadgk(
         x -> Ωp_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
@@ -38,7 +39,7 @@ end
 end
 
 @inline function Ωn_Integrand(z, u, v, x::Float64)
-    t = t0 + z * P
+    t = t0
     W = ((z / t)^2 - 1.0) / (4.0 * cos(x)) - cos(x)
     return (
         2 *
@@ -48,7 +49,7 @@ end
 end
 
 @inline function Ωn(z, u, v)
-    t = t0 + z * P
+    t = t0
     return ((quadgk(
         x -> Ωn_Integrand(z, u, v, x) / (8.0 * π * t^2),
         0.0,
@@ -59,7 +60,7 @@ end
 # The propagator function picks out the correct element of the Ξ matrix based
 # on the sublattices of the graphene coordinates
 function propagator(a_l::GrapheneCoord, a_m::GrapheneCoord, z)
-    t = t0 + z * P
+    t = t0
     u = a_l.u - a_m.u
     v = a_l.v - a_m.v
     if a_l.sublattice == a_m.sublattice

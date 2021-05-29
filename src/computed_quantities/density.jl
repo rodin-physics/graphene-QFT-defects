@@ -7,21 +7,17 @@ function δρ_Graphene_Integrand(
     imps::Vector{ImpurityState},
     mod_atoms::Vector{PerturbedAtom},
 )
+    # Scattering atoms
     atoms = scattering_atoms(imps, mod_atoms)
     D = scattering_matrix(z, imps, atoms)
 
+    # Coordinates of the neighbors. Needed due to the orbital overlap
     neighbors_ = neighbors(loc)
     # Self-propagator
     PropVectorR = map(x -> propagator(x.coord, loc, z), atoms)
-    self_prop = (transpose(PropVectorR)*D*PropVectorR)[1]
-    # Neighbor propagator
-    PropVectorL =
-        map(y -> map(x -> propagator(x.coord, y, z), atoms), neighbors_) |>
-        sum |>
-        transpose
-    neighbor_prop = (PropVectorL*D*PropVectorR)[1]
+    res = (transpose(PropVectorR)*D*PropVectorR)[1]
 
-    return (self_prop + P * neighbor_prop)
+    return (res)
 
 end
 

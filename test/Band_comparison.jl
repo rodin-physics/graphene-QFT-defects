@@ -36,10 +36,10 @@ QY = vcat(
 
 # Calculated energies along the predefined momentum path
 energy_states =
-        map((qx, qy) -> inv(Overlap([qx, qy])) * Hπ([qx, qy]) |> eigen, QX, QY)
+        map((qx, qy) -> Hπ([qx, qy]) |> eigen, QX, QY)
 Energies = reduce(hcat, map(x -> x.values, energy_states))
 
-fig = Figure(resolution = (1800, 1800))
+fig = Figure(resolution = (300, 300))
 ax =
         fig[1, 1] = Axis(
                 fig,
@@ -70,5 +70,4 @@ l1 = lines!(xCoord, real.(Energies[1, :]))
 l2 = lines!(xCoord, real.(Energies[2, :]))
 
 ylims!(ax, (-10, 15))
-# ylims!(ax, (-200, 200))
 fig

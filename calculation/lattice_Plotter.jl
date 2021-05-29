@@ -1,7 +1,5 @@
 using CairoMakie
-using GLMakie
 
-CairoMakie.activate!()
 include("../src/analysis/dataprocess.jl")
 
 A_Lattice = readdlm("Data/Spectral/spectral_A.dat")

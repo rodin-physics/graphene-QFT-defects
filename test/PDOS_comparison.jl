@@ -12,7 +12,7 @@ sp_fun = map(
         ωs,
 )
 
-fig = Figure(resolution = (1800, 1800))
+fig = Figure(resolution = (300, 300))
 ax =
         fig[1, 1] = Axis(
                 fig,

@@ -1,4 +1,4 @@
-    \documentclass[aps,prb,superscriptaddress,preprint,floatfix]{revtex4-1}
+\documentclass[aps, prb, superscriptaddress, preprint, floatfix]{revtex4-1}
 \usepackage{graphicx}% Include figure files
 \usepackage{dcolumn}% Align table columns on decimal point
 \usepackage{bm}% bold math
@@ -15,10 +15,401 @@
 }
 
 \begin{document}
-	
-\section{Hamiltonian}
 
-To describe an infinitely-large graphene system with multiple defects, we use the following Hamiltonian:
+\section{Non-orthogonal States}
+
+In the tight-binding approximation, one commonly neglects the orbital overlap integral (treating the states in the system as orthogonal). While this assumption is generally well-motivated on physical grounds, the finite overlap does have an impact on the quantitative results. We start by providing a quick guide to help one write down the action for non-orthogonal states.
+
+A general bilinear form of a Hamiltonian describing coupling between not-necessarily-orthogonal states is
+%
+\begin{equation}
+	\hat{H} = \sum_{ab} c_a^\dagger H_{ab} c_b = \mathbf{c}^\dagger H \mathbf{c}\,,
+\end{equation}
+%
+where $a$ and $b$ label the individual states. Allowing for the overlap, the eigenstates $\Psi$ of the system are found by solving the generalized eigenvalue problem
+%
+\begin{equation}
+	H\Psi = E P\Psi\,,
+\end{equation}
+%
+where $P$ is the overlap matrix. One can transform this Hamiltonian as follows
+%
+\begin{equation}
+	H\Psi= E_\mathbf{q}P^{1/2} P^{1/2} \Psi
+	\rightarrow 
+	P^{-1/2}HP^{-1/2}P^{1/2}\Psi = E P^{1/2} \Psi\,.
+\end{equation}
+%
+Hence, it is useful to define $\mathbf{c} = P^{-1/2}\tilde{\mathbf{c}}$ and write the second-quantized Hamiltonian as
+%
+\begin{align}
+    \hat{H} &= \tilde{\mathbf{c}}^\dagger P^{-1/2}
+    H
+    P^{-1/2}\tilde{\mathbf{c}}
+    \,.
+\end{align}
+%
+
+Next, one can translate the Hamiltonian into the Matsubara-frequency action
+%
+\begin{align}
+    S &= \sum_{\omega_n} \bar\psi_{\omega_n}
+    \left[\left(-i\omega_n-\mu\right)
+    + 
+    P^{-1/2}
+    H
+    P^{-1/2}
+    \right]
+    \psi_{\omega_n}
+    \nonumber
+    \\
+    &= \sum_{\omega_n} \bar\psi_{\omega_n}
+    P^{-1/2}
+    \left[P\left(-i\omega_n-\mu\right)
+    + 
+    H
+    \right]
+    P^{-1/2}\psi_{\omega_n}
+    \nonumber
+    \\
+    &= \sum_{\omega_n} \bar\phi_{\omega_n}
+    \left[P\left(-i\omega_n-\mu\right)
+    + 
+    H
+    \right]
+    \phi_{\omega_n}
+    \,,
+\end{align}
+%
+where $\phi_{\omega_n}$ is a vector of Grassmann numbers corresponding to the original operators $\mathbf{c}$. Hence, one can see that including the overlap amounts to adding $P_{ab}(-i\omega_n - \mu)$ to $H_{ab}$.
+
+It is important to note that because of the finite overlap, the operators $c^\dagger_a$ and $c_b$ do not obey the familiar commutation relation and, therefore, do not form a canonical pair:
+%
+\begin{align}
+	\langle 0|\{c_a^\dagger, c_b\}|0\rangle 
+	&= 
+	\langle 0|c_a^\dagger c_b + c_b c_a^\dagger|0\rangle
+	= 
+	\langle 0|c_a^\dagger c_b|0\rangle
+	+
+	\langle 0|c_b c_a^\dagger|0\rangle
+	\nonumber
+	\\
+	&= 
+	\langle 0|c_b c_a^\dagger|0\rangle = \langle b| a\rangle = P_{ba}.
+\end{align}
+%
+
+On the other hand, we have
+%
+\begin{align}
+	\langle 0|\{c_a^\dagger, \sum_{b}P_{jb}^{-1} c_b\}|0\rangle 
+	&= 
+	\langle 0|c_a^\dagger \sum_{b}P_{jb}^{-1} c_b + \sum_{b}P_{jb}^{-1} c_b c_a^\dagger|0\rangle
+	\nonumber
+	\\
+	&= 
+	\langle 0|\sum_{b}P_{jb}^{-1} c_b c_a^\dagger|0\rangle  = \sum_{b}P_{jb}^{-1}P_{ba} = \delta_{aj}.
+\end{align}
+%
+
+\section{Prototypical System}
+
+
+
+
+When the overlap is included, the two-band eigenvalues are found by solving the generalized eigenvalue problem
+
+%
+\begin{align}
+	H^G_{0,\mathbf{q}}\Psi_\mathbf{q} = E_\mathbf{q}P_\mathbf{q} \Psi_\mathbf{q}\,,
+\end{align}
+%
+where $P_\mathbf{q}$ is a $2\times 2$ overlap matrix. One can transform this Hamiltonian as follows
+
+%
+\begin{align}
+	&H^G_{0,\mathbf{q}}\Psi_\mathbf{q} = E_\mathbf{q}P^{1/2}_\mathbf{q} P^{1/2}_\mathbf{q} \Psi_\mathbf{q}
+	\nonumber
+	\\
+	\rightarrow &P^{-1/2}_\mathbf{q}H^G_{0,\mathbf{q}}P^{-1/2}_\mathbf{q}P^{1/2}_\mathbf{q}\Psi_\mathbf{q} = E_\mathbf{q} P^{1/2}_\mathbf{q} \Psi_\mathbf{q}\,.
+\end{align}
+%
+
+Hence, it is useful to define $c_\mathbf{q} = P_\mathbf{q}^{-1/2}\tilde{c}_\mathbf{q}$ to write the second-quantized Hamiltonian as
+
+%
+\begin{align}
+    \hat{H} &= \sum_{\mathbf{q}} \tilde{c}_\mathbf{q}^\dagger P_\mathbf{q}^{-1/2}
+    H_{0,\mathbf{q}}^G 
+    P_\mathbf{q}^{-1/2}\tilde{c}_\mathbf{q}
+    \nonumber
+    \\
+    &+
+    \frac{1}{N}\sum_{\mathbf{qq}'} \tilde{c}_\mathbf{q}^\dagger P_\mathbf{q}^{-1/2} \Theta_{\mathbf{q}}^\dagger \tilde{\Delta} \Theta_{\mathbf{q}'}P_{\mathbf{q}'}^{-1/2}\tilde{c}_{\mathbf{q}'}
+    \,.
+    \label{eqn:H_QFT_2}
+\end{align}
+%
+
+Next, one can translate the Hamiltonian into the imaginary-time action
+%
+\begin{align}
+    S &= \sum_{\omega_n\mathbf{qq}'} \bar\psi_{\omega_n\mathbf{q}}
+    \left[\left(-i\omega_n-\mu\right) \delta_{\mathbf{qq}'}
+    + 
+    P_\mathbf{q}^{-1/2}
+    H^G_{\mathbf{qq}'} 
+    P_{\mathbf{q}'}^{-1/2}
+    \right]
+    \psi_{\omega_n\mathbf{q}'}\,.
+    \label{eqn:S}
+\end{align}
+%
+Note that we have combined the $\mathbf{q}$-diagonal and non-diagonal portions of the graphene Hamiltonian into $ H^G_{\mathbf{qq}'}$. Finally, we change the graphene fields back to the original orbitals to get
+%
+\begin{align}
+    S &= \sum_{\omega_n\mathbf{qq}'} \bar\phi_{\omega_n\mathbf{q}}
+    \overbrace{
+    \left[P_\mathbf{q}\left(-i\omega_n-\mu\right) \delta_{\mathbf{qq}'}
+    + 
+    H^G_{\mathbf{qq}'} \right]}^{-G^{-1}_{i\omega_n + \mu, \mathbf{qq}'}}
+    \phi_{\omega_n\mathbf{q}'}\,.
+    \label{eqn:S_2}
+\end{align}
+%
+%Importantly, there is a Jacobian associated 
+
+Defining a pristine graphene Green's function $G_{z}^0 = \left(zP - H^G_0\right)^{-1}$ leads to
+
+%
+\begin{align}
+	G_{z} &= \left[\left(G_{z}^0\right)^{-1} - \frac{1}{N} \Theta^\dagger \tilde{\Delta}  \Theta\right]^{-1}
+	\nonumber
+	\\
+	&=
+	G_{z}^0
+	+
+	\frac{1}{N} G_{z}^0\Theta^\dagger \tilde{\Delta}
+	\left( 1
+	-
+	 \boldsymbol{\Xi}_{z} \tilde{\Delta}
+	\right)^{-1} \Theta G_{z}^0\,,	
+\end{align}
+%
+where $\boldsymbol{\Xi}^0_{z} = \Theta G_{z}^0\Theta^\dagger / N$ with entries $\left[\boldsymbol{\Xi}^0_{z}\right]_{\mathbf{R}_j\mathbf{R}_k} = \Xi_{z}^0\left(\mathbf{R}_j - \mathbf{R}_k\right)$, $\Theta$ as a row vector of $\Theta_\mathbf{q}$, and
+
+%
+\begin{equation}
+    \Xi_z^0\left(\mathbf{R}\right) = \frac{1}{N}\sum_\mathbf{q}G_{z\mathbf{q}}^0
+    e^{i \mathbf{R} \cdot\mathbf{q}}\,.
+    \label{eqn:Xi}
+\end{equation}
+%
+
+
+	
+\section{Prototype System}
+
+
+
+To model graphene coupled to external electronic states and influenced by an external potential, it is beneficial to start with the following generic Hamiltonian
+%
+\begin{align}
+	\hat{H} &= \sum_{ab} c^\dagger_a \left(H_{ab} +\Delta_{ab}\right)c_b + \sum_{ab} d^\dagger_a h_{ab} d_b+ \sum_{ab} d^\dagger_a V_{ab} c_b + c^\dagger_b V_{ab}^* d_a
+	\,.
+\end{align}
+%
+Here, we have introduced two fermionic systems with the corresponding operators $c$ and $d$, governed by the Hamiltonians $H$ and $h$, respectively. The subscripts $a$ and $b$ label the individual states in these systems, while $V_{ab}$ represent the coupling between them. The term $\Delta_{ab}$ describes a general two-operator perturbation of one of the systems.
+
+The expression can be made more compact by introducing $\mathbf{c}$ and $\mathbf{d}$ as column vectors of $c_a$ and $d_a$, respectively:
+%
+\begin{align}
+	\hat{H} &= 	\mathbf{c}^\dagger \left(H+\Delta\right)\mathbf{c}
+	+ 	\mathbf{d}^\dagger h\mathbf{d}
+	+ \mathbf{d}^\dagger V \mathbf{c} +  \mathbf{c}^\dagger V^\dagger \mathbf{d}
+	\,.
+\end{align}
+%
+
+%
+\begin{align}
+	\hat{H} &= \sum_{ab} c^\dagger_a H_{ab} c_b 
+	+ 
+	\sum_{aa'bb'}U_{aa'bb'} c_a^\dagger c_b^\dagger c_{b'} c_{a'}
+	\nonumber
+	\\
+	&+ \sum_{ab} d^\dagger_a h_{ab} d_b
+	 +
+	  \sum_{aa'bb'}u_{aa'bb'} d_a^\dagger d_b^\dagger d_{b'} d_{a'}
+	\nonumber
+	\\
+	&+ \sum_{ab} d^\dagger_a V_{ab} c_b + c^\dagger_b V_{ab}^* d_a
+	+ 
+	\sum_{aa'bb'}W_{aa'bb'} c_a^\dagger d_b^\dagger d_{b'} c_{a'}\,,
+\end{align}
+%
+We also include the two-body interaction terms $U$ and $u$ for each system, as well as a two-body interaction $W$ between the systems. The expression can be made more compact by introducing $\mathbf{c}$ and $\mathbf{d}$ as column vectors of $c_a$ and $d_a$, respectively:
+%
+\begin{align}
+	\hat{H} &= 	\mathbf{c}^\dagger H\mathbf{c}
+	+ 
+	\sum_{aa'bb'}U_{aa'bb'} c_a^\dagger c_b^\dagger c_{b'} c_{a'}
+	\nonumber
+	\\
+	&+ 	\mathbf{d}^\dagger h\mathbf{d}
+	 +
+	  \sum_{aa'bb'}u_{aa'bb'} d_a^\dagger d_b^\dagger d_{b'} d_{a'}
+	\nonumber
+	\\
+	&+ \mathbf{d}^\dagger V \mathbf{c} +  \mathbf{c}^\dagger V^\dagger \mathbf{d}
+	+ 
+	\sum_{aa'bb'}W_{aa'bb'} c_a^\dagger d_b^\dagger d_{b'} c_{a'}\,.
+\end{align}
+%
+
+Because the Hamiltonian operator is normal-ordered, we can transcribe it into the imaginary-time action
+%
+\begin{align}
+	S &= \int_0^\beta d\tau
+	\Bigg\{\bar\psi(\tau) \left[\partial_\tau - \mu + H\right]\psi(\tau)
+	+ 
+	\sum_{aa'bb'}U_{aa'bb'} \bar\psi_a(\tau)\bar\psi_b(\tau)\psi_{b'}(\tau)\psi_{a'}(\tau) 
+	\nonumber
+	\\
+	&+ \bar\phi(\tau)\left[\partial_\tau - \mu + h\right]\phi(\tau)
+	 +
+	  \sum_{aa'bb'}u_{aa'bb'} \bar\phi_a(\tau)\bar\phi_b(\tau)\phi_{b'}(\tau)\phi_{a'}(\tau) 
+	\nonumber
+	\\
+	&+ \bar\phi(\tau) V \psi(\tau) +  \bar\psi(\tau) V^\dagger \phi(\tau)
+	+ 
+	\sum_{aa'bb'}W_{aa'bb'} \bar\psi_a(\tau)\bar\phi_b(\tau)\phi_{b'}(\tau)\psi_{a'}(\tau) \Bigg\}\,.
+\end{align}
+%
+
+To describe an infinitely-large graphene system with multiple defects, we start with the standard tight-binding $p_z$ orbital Hamiltonian including only the nearest-neighbor hopping with the parameter $t$
+%
+\begin{equation}
+	\hat{H}_{0}^G 
+	= 
+	\sum_{\sigma,\mathbf{q}}
+	\begin{pmatrix}
+		a^\dagger_{\sigma,\mathbf{q}} & b^\dagger_{\sigma,\mathbf{q}}
+	\end{pmatrix} 
+	\begin{pmatrix}
+       0&-tf_\mathbf{q}
+       \\
+       -tf_\mathbf{q}^*&0
+   \end{pmatrix} 
+   \begin{pmatrix}
+		a_{\sigma,\mathbf{q}} \\ b_{\sigma,\mathbf{q}}
+	\end{pmatrix} 
+	= 
+	\sum_{\sigma,\mathbf{q}}
+	c^\dagger_{\sigma,\mathbf{q}}
+	H_{0,\mathbf{q}}^G 
+	c_{\sigma,\mathbf{q}} 
+	= \mathbf{c}^\dagger H^G_0 \mathbf{c}\,.
+	\label{eqn:H0}
+\end{equation}
+%
+Here, $\mathbf{c}$ is a column vector of $c_{\sigma,\mathbf{q}}$ and $H_0^G$ is the corresponding matrix. Note that, to keep the problem general, the operators are spin-dependent, as can be seen from the $\sigma$ subscript.
+
+Next, we augment the Hamiltonian by introducing external electronic states that can be coupled to each other, as well as to individual graphene orbitals
+%
+\begin{align}
+	\hat{H}_S 
+	&=
+	\sum_{\sigma\sigma', jk} g_{\sigma, j}^\dagger h^{\sigma\sigma'}_{jk} g_{ \sigma',k} + 
+	\sum_{\sigma\sigma',k,\mathbf{R}}\left[c^\dagger_{\sigma,\mathbf{R}} V^{\sigma\sigma'}_{\mathbf{R},k}g_{\sigma',k} + g_{\sigma',k}^\dagger \left(V^{\sigma\sigma'}_{\mathbf{R},k}\right)^\dagger c_{\sigma,\mathbf{R}}\right]
+	\nonumber
+	\\
+	&=
+	\mathbf{g}^\dagger h\mathbf{g}
+	 + 
+	 \frac{1}{\sqrt{N}}\mathbf{c}^\dagger \Theta^\dagger V\mathbf{g} 
+	 + 
+	 \frac{1}{\sqrt{N}}\mathbf{g}^\dagger V^\dagger \Theta \mathbf{c}
+	\,,
+\end{align}
+%
+where $\mathbf{g}$ is a column vector of $g_{\sigma,k}$ and $V^{\sigma\sigma'}_{\mathbf{R},k}$ is a $2\times 1$ matrix. The summation over $\mathbf{R}$ includes all the unit cells in the system, even if the coupling between a particular unit cell and the external electronic states is zero. In the last line, we used $c^\dagger_{\sigma,\mathbf{R}} = N^{-1/2}\sum_\mathbf{q}c^\dagger_{\sigma,\mathbf{q}} e^{-i\mathbf{R}\cdot\mathbf{q}}$, where $N$ is the number of unit cells in the system, to define the Fourier transform matrix $\Theta$.
+
+Finally, we include a two-operator energy term that modifies the orbital energy and the hopping between two atoms, as well as a four-operator Coulomb electron-electron interaction term:
+%
+\begin{align}
+	\hat{H}_{e} &= 
+	\sum_{\sigma\sigma',\mathbf{RR}'} c^\dagger_{\sigma,\mathbf{R}}\Delta_{\mathbf{RR}'}^{\sigma\sigma'}c_{\sigma',\mathbf{R}'}
+	+
+	\sum_{\sigma\sigma',\mathbf{RR}'}\sum_{jk}
+	U_{\mathbf{RR}'}^{jk}
+	c_{k,\sigma,\mathbf{R}}^\dagger
+	c_{j,\sigma',\mathbf{R}'}^\dagger
+	c_{j,\sigma',\mathbf{R}'}
+	c_{k,\sigma,\mathbf{R}}
+	\nonumber
+	\\
+	&= 
+	\frac{1}{N}\mathbf{c}^\dagger \Theta^\dagger \Delta\Theta\mathbf{c}
+	+
+	\frac{1}{N^2}\sum_{\sigma\sigma',\mathbf{RR}'}\sum_{jk}
+	U_{\mathbf{RR}'}^{jk}
+	\left(\mathbf{c}^\dagger\Theta^\dagger \right)_{k,\sigma,\mathbf{R}}
+	\left(\mathbf{c}^\dagger\Theta^\dagger \right)_{j,\sigma',\mathbf{R}'}
+	\left(\Theta\mathbf{c}\right)_{j,\sigma',\mathbf{R}'}
+	\left(\Theta\mathbf{c}\right)_{k,\sigma,\mathbf{R}}
+	\nonumber
+	\\
+	&= 
+	\frac{1}{N}\mathbf{c}^\dagger \Theta^\dagger \Delta\Theta\mathbf{c}
+	+
+	\frac{1}{N^2}\sum_{AB}
+	U_{AB}	\left(\mathbf{c}^\dagger\Theta^\dagger \right)_{A}
+	\left(\mathbf{c}^\dagger\Theta^\dagger \right)_{B}
+	\left(\Theta\mathbf{c}\right)_{B}
+	\left(\Theta\mathbf{c}\right)_{A}\,,
+\end{align}
+%
+where $j$ and $k$ label the sublattice. In the last line, we combine all the state labels into $A$ and $B$ for brevity.
+
+\section{Action}
+
+Following the standard QFT approach, the Hamiltonian can be written as the imaginary-time action
+%
+\begin{align}
+	S &= \int d\tau
+	\Bigg\{
+	\sum_{\sigma,\mathbf{q}}
+	\bar\psi_{\sigma,\mathbf{q}}(\tau)
+	\left[\partial_\tau -\mu + H_{0,\mathbf{q}}^G \right]
+	\psi_{\sigma,\mathbf{q}}(\tau)
+	+
+	\sum_{\sigma, k} \bar\gamma_{\sigma, k}(\tau) \left[\partial_\tau - \mu + \varepsilon_{\sigma,k}  \right]\gamma_{ \sigma,k}(\tau) 
+	\nonumber
+	\\
+	&+ 
+	\sum_{\sigma,k,\mathbf{R}}\left[ \bar\psi_{\sigma,\mathbf{R}} (\tau)V_{\mathbf{R},k}\gamma_{\sigma,k}(\tau) + \bar\gamma_{\sigma,k}(\tau) V_{\mathbf{R},k}^\dagger \psi_{\sigma,\mathbf{R}}(\tau)\right]
+	\nonumber
+	\\
+	&+
+	\sum_{\sigma\sigma',\mathbf{RR}'} \bar\psi_{\sigma,\mathbf{R}}(\tau)\Delta_{\mathbf{RR}'}^{\sigma\sigma'}\psi_{\sigma',\mathbf{R}'}(\tau)
+	\nonumber
+	\\
+	&+
+	\sum_{\sigma\sigma',\mathbf{RR}'}\sum_{ij}
+	U_{\mathbf{RR}'}^{jk}
+	\bar\psi_{k,\sigma,\mathbf{R}}(\tau)
+	\bar\psi_{j,\sigma',\mathbf{R}'}(\tau)
+	\psi_{j,\sigma',\mathbf{R}'}(\tau)
+	\psi_{k,\sigma,\mathbf{R}}(\tau)
+	\Bigg\}\,.
+\end{align}
+% 
+
+
+
+the following Hamiltonian:
 %
 \begin{align}
     \hat{H} &= \sum_{\mathbf{q}} c^\dagger_{\mathbf{q}}
@@ -39,8 +430,10 @@ To describe an infinitely-large graphene system with multiple defects, we use th
     \\
     &+  
     \sum_{jl} c_{\mathbf{R}_j}^\dagger I_j \Delta_{jl} I^T_lc_{\mathbf{R}_l}
+    =
+    \sum_{}
     \,.
-    \label{eqn:H_QFT}
+    \label{eqn:H0_QFT}
 \end{align}
 %
 
@@ -385,5 +778,357 @@ Finally, $\Xi^{\mathbf{R}}_z$ for $\mathbf{R} = u\mathbf{d}_1 + v\mathbf{d}_2$ c
 \,.
 \end{align}
 %
+
+
+
+Starting with the pristine graphene Hamiltonian, we introduce the external electric charge by including a position-dependent potential
+
+%
+\begin{align}
+    \hat{H} &= \sum_{\mathbf{q}\sigma} c^\dagger_{\mathbf{q}\sigma}
+    H_{0,\mathbf{q}}^G 
+    c_{\mathbf{q}\sigma}
+    +\sum_{\mathbf{R}\sigma} c_{\mathbf{R}\sigma}^\dagger \Delta_{\mathbf{R}} c_{\mathbf{R}\sigma}
+    \,.
+    \label{eqn:H_0}
+\end{align}
+%
+Here, $H_{0,\mathbf{q}}^G$ is the pristine Hamiltonian matrix and $c_{\mathbf{q}\sigma}^\dagger = \begin{pmatrix} a_{\mathbf{q}\sigma}^\dagger&b_{\mathbf{q}\sigma}^\dagger
+\end{pmatrix}$ is a vector of creation operators in the momentum space with $c_{\mathbf{R}\sigma}^\dagger$ as its real-space counterpart and $\sigma$ as the spin index. $\Delta_{\mathbf{R}}$ is a diagonal $2\times 2$ matrix of potential energies for the two sublattice atoms for the unit cell at $\mathbf{R}$ computed from
+
+%
+\begin{equation}
+    \Delta_\mathbf{R}^{A/B} = e\int d\mathbf{r} \,V(\mathbf{r}) \Psi_{A/B,\mathbf{R}}^2(\mathbf{r})\,,
+\end{equation}
+%
+where $\Psi_{A/B,\mathbf{R}}(\mathbf{r})$ is the wave function of the carbon $p_z$ orbital belonging to the $A/B$ sublattice of the unit cell at $\mathbf{R}$ and $V(\mathbf{r})$ is an external potential.
+
+To include screening, we introduce electron-electron interaction. Assuming that the system is not magnetized so that the densities of spin-up and spin-down electrons are equal, the mean-field expression for the electronic interaction becomes
+
+%
+\begin{align}
+    \hat{H}_{ee} &= 
+    2\sum_{\mathbf{R}\sigma i}
+    c^\dagger_{\mathbf{R}\sigma i} 
+    \left(\sum_{\mathbf{R}'j}
+    U_{\mathbf{RR}'}^{ij}
+    \langle n_{\mathbf{R}'}^j\rangle
+    \right)
+    c_{\mathbf{R}\sigma i} \,,
+    \label{eqn:H_ee}
+\end{align}
+%
+where $\langle n_\mathbf{R}^j\rangle$ the mean-field occupation number for sublattice $j$ at the unit cell $\mathbf{R}$, 
+
+%
+\begin{align}
+    U_{\mathbf{R}\mathbf{{R}'}}^{ij} = 
+    \frac{1}{2^{\delta_{ij}\delta_{\mathbf{RR}'}}}
+    \int d\mathbf{r}\, d\mathbf{r}' \frac{e^2}{|\mathbf{r} - \mathbf{r}'|}
+    \Psi_{i,\mathbf{R}}^2(\mathbf{r})
+    \Psi_{j,\mathbf{R}'}^2(\mathbf{r}')
+    \label{eqn:U}
+\end{align}
+%
+is the Coulomb interaction, and the subscript $i$ labels the sublattice. The prefactor 2 in Eq.~\eqref{eqn:H_ee} accounts for two spins with equal occupation numbers at each $p_z$ orbital. The prefactor $1/2$ in Eq.~\eqref{eqn:U} for $i = j$ and $\mathbf{R} = \mathbf{R}'$ guarantees that an electron of interacts only with one electron of the opposite spin at its own location.
+
+In the absence of the external perturbation, the occupation number is the same for all the orbitals in the system. Denoting this number by $n^0$, we can write
+
+%
+\begin{align}
+    \hat{H}_{ee} &= 
+   2\sum_{\mathbf{R}\sigma i}
+    c^\dagger_{\mathbf{R}\sigma i} 
+    \left[\sum_{\mathbf{R}'j}
+    U_{\mathbf{RR}'}^{ij}
+   \left( \langle n_{\mathbf{R}'}^j\rangle - n^0\right)
+    \right]
+    c_{\mathbf{R}\sigma i} 
+    \nonumber
+    \\
+    &+
+    2\sum_{\mathbf{R}\sigma i}
+    c^\dagger_{\mathbf{R}\sigma i} 
+    \left(\sum_{\mathbf{R}'j}
+    U_{\mathbf{RR}'}^{ij}
+    n^0
+    \right)
+    c_{\mathbf{R}\sigma i} \,,
+    \label{eqn:H_ee_2}
+\end{align}
+%
+where second term can be absorbed into the chemical potential. The first term indicates that only the orbitals whose occupancy differs significantly from $n^0$ contribute to the electron-electron interaction.
+
+Combining the first term of Eq.~\eqref{eqn:H_ee_2} with the external potential allows us to define the occupancy-dependent screened potential
+%
+\begin{equation}
+    \tilde{\Delta}_\mathbf{R}^i = \Delta_\mathbf{R}^i + 2\sum_{\mathbf{R}'j}
+    U_{\mathbf{RR}'}^{ij}
+   \left( \langle n_{\mathbf{R}'}^j\rangle - n^0\right)
+\end{equation}
+%
+and, consequently,
+
+%
+\begin{align}
+    \hat{H} &= \sum_{\mathbf{q}\sigma} c^\dagger_{\mathbf{q}\sigma}
+    H_{0,\mathbf{q}}^G 
+    c_{\mathbf{q}\sigma}
+    +\sum_{\mathbf{R}\sigma} c_{\mathbf{R}\sigma}^\dagger \tilde{\Delta}_{\mathbf{R}} c_{\mathbf{R}\sigma}
+    \,.
+    \label{eqn:H}
+\end{align}
+%
+
+Using  $c^\dagger_{\mathbf{R}\sigma} = N^{-1/2}\sum_\mathbf{q}c^\dagger_{\mathbf{q}\sigma} e^{-i\mathbf{R}\cdot\mathbf{q}}$, where $N$ is the number of unit cells in the system, one gets
+
+%
+\begin{align}
+	\sum_{\mathbf{R}\sigma} c_{\mathbf{R}\sigma}^\dagger  \tilde{\Delta}_{\mathbf{R}} c_{\mathbf{R}\sigma}
+	=\frac{1}{N}\sum_{\mathbf{qq}'} c_{\mathbf{q}\sigma}^\dagger \Theta_{\mathbf{q}}^\dagger\tilde{\Delta} \Theta_{\mathbf{q}'}c_{\mathbf{q}'\sigma}\,,
+	\label{eqn:Delta}
+\end{align}
+%
+where $\Theta_\mathbf{q}$ is a column vector of $\mathbf{1}_{2\times 2} e^{i\mathbf{R}\cdot\mathbf{q}}$ for all $\mathbf{R}$.
+
+When the overlap is included, the two-band eigenvalues are found by solving the generalized eigenvalue problem
+
+%
+\begin{align}
+	H^G_{0,\mathbf{q}}\Psi_\mathbf{q} = E_\mathbf{q}P_\mathbf{q} \Psi_\mathbf{q}\,,
+\end{align}
+%
+where $P_\mathbf{q}$ is a $2\times 2$ overlap matrix. One can transform this Hamiltonian as follows
+
+%
+\begin{align}
+	&H^G_{0,\mathbf{q}}\Psi_\mathbf{q} = E_\mathbf{q}P^{1/2}_\mathbf{q} P^{1/2}_\mathbf{q} \Psi_\mathbf{q}
+	\nonumber
+	\\
+	\rightarrow &P^{-1/2}_\mathbf{q}H^G_{0,\mathbf{q}}P^{-1/2}_\mathbf{q}P^{1/2}_\mathbf{q}\Psi_\mathbf{q} = E_\mathbf{q} P^{1/2}_\mathbf{q} \Psi_\mathbf{q}\,.
+\end{align}
+%
+
+Hence, it is useful to define $c_\mathbf{q} = P_\mathbf{q}^{-1/2}\tilde{c}_\mathbf{q}$ to write the second-quantized Hamiltonian as
+
+%
+\begin{align}
+    \hat{H} &= \sum_{\mathbf{q}} \tilde{c}_\mathbf{q}^\dagger P_\mathbf{q}^{-1/2}
+    H_{0,\mathbf{q}}^G 
+    P_\mathbf{q}^{-1/2}\tilde{c}_\mathbf{q}
+    \nonumber
+    \\
+    &+
+    \frac{1}{N}\sum_{\mathbf{qq}'} \tilde{c}_\mathbf{q}^\dagger P_\mathbf{q}^{-1/2} \Theta_{\mathbf{q}}^\dagger \tilde{\Delta} \Theta_{\mathbf{q}'}P_{\mathbf{q}'}^{-1/2}\tilde{c}_{\mathbf{q}'}
+    \,.
+    \label{eqn:H_QFT_2}
+\end{align}
+%
+
+Next, one can translate the Hamiltonian into the imaginary-time action
+%
+\begin{align}
+    S &= \sum_{\omega_n\mathbf{qq}'} \bar\psi_{\omega_n\mathbf{q}}
+    \left[\left(-i\omega_n-\mu\right) \delta_{\mathbf{qq}'}
+    + 
+    P_\mathbf{q}^{-1/2}
+    H^G_{\mathbf{qq}'} 
+    P_{\mathbf{q}'}^{-1/2}
+    \right]
+    \psi_{\omega_n\mathbf{q}'}\,.
+    \label{eqn:S}
+\end{align}
+%
+Note that we have combined the $\mathbf{q}$-diagonal and non-diagonal portions of the graphene Hamiltonian into $ H^G_{\mathbf{qq}'}$. Finally, we change the graphene fields back to the original orbitals to get
+%
+\begin{align}
+    S &= \sum_{\omega_n\mathbf{qq}'} \bar\phi_{\omega_n\mathbf{q}}
+    \overbrace{
+    \left[P_\mathbf{q}\left(-i\omega_n-\mu\right) \delta_{\mathbf{qq}'}
+    + 
+    H^G_{\mathbf{qq}'} \right]}^{-G^{-1}_{i\omega_n + \mu, \mathbf{qq}'}}
+    \phi_{\omega_n\mathbf{q}'}\,.
+    \label{eqn:S_2}
+\end{align}
+%
+%Importantly, there is a Jacobian associated 
+
+Defining a pristine graphene Green's function $G_{z}^0 = \left(zP - H^G_0\right)^{-1}$ leads to
+
+%
+\begin{align}
+	G_{z} &= \left[\left(G_{z}^0\right)^{-1} - \frac{1}{N} \Theta^\dagger \tilde{\Delta}  \Theta\right]^{-1}
+	\nonumber
+	\\
+	&=
+	G_{z}^0
+	+
+	\frac{1}{N} G_{z}^0\Theta^\dagger \tilde{\Delta}
+	\left( 1
+	-
+	 \boldsymbol{\Xi}_{z} \tilde{\Delta}
+	\right)^{-1} \Theta G_{z}^0\,,	
+\end{align}
+%
+where $\boldsymbol{\Xi}^0_{z} = \Theta G_{z}^0\Theta^\dagger / N$ with entries $\left[\boldsymbol{\Xi}^0_{z}\right]_{\mathbf{R}_j\mathbf{R}_k} = \Xi_{z}^0\left(\mathbf{R}_j - \mathbf{R}_k\right)$, $\Theta$ as a row vector of $\Theta_\mathbf{q}$, and
+
+%
+\begin{equation}
+    \Xi_z^0\left(\mathbf{R}\right) = \frac{1}{N}\sum_\mathbf{q}G_{z\mathbf{q}}^0
+    e^{i \mathbf{R} \cdot\mathbf{q}}\,.
+    \label{eqn:Xi}
+\end{equation}
+%
+
+To calculate $\Xi_z^0$, note that
+%
+\begin{align}
+   \left[ G_{z\mathbf{q}}^0\right]^{-1} &= 
+   z\begin{pmatrix}
+       1&P f_\mathbf{q}
+       \\
+       P f_\mathbf{q}^*&1
+   \end{pmatrix} - 
+   \begin{pmatrix}
+       0&-tf_\mathbf{q}
+       \\
+       -tf_\mathbf{q}^*&0
+   \end{pmatrix} 
+   \nonumber
+   \\
+   &= 
+   \begin{pmatrix}
+       z&(zP+t) f_\mathbf{q}
+       \\
+       (zP+t) f_\mathbf{q}^*&z
+   \end{pmatrix}\,.
+\end{align}
+%
+In other words, including the overlap integral simply changes $t \rightarrow t + zP$ in the non-overlap propagator, derived below.
+
+Sandwiching $G_z$ by $\Theta/\sqrt{N}$ and $\Theta^\dagger/\sqrt{N}$ gives the real-space Green's function
+
+%
+\begin{align}
+	\boldsymbol{\Xi}_{z} &= 
+		\boldsymbol{\Xi}_{z}^0
+	+
+		\boldsymbol{\Xi}_{z}^0 \tilde{\Delta}
+	\left( 1
+	-
+	 \boldsymbol{\Xi}_{z}^0 \tilde{\Delta}
+	\right)^{-1} \boldsymbol{\Xi}_{z}^0\,.	
+\end{align}
+%
+
+From the real-space Green's function, we can obtain the correlation functions
+
+%
+\begin{align}
+    \langle \bar{\phi}_{z,\mathbf{R}_i}^i \phi_{z,\mathbf{R}_j}^j\rangle  = \left[\boldsymbol{\Xi}_{z,\mathbf{R}_j \mathbf{R}_i}\right]_{ji}\,.
+\end{align}
+%
+
+
+\section{Occupation Number}
+
+One of the quantities that we can calculate using the presented formalism is the occupation number. Typically, one would write $\langle a_\mathbf{R}^\dagger a_\mathbf{R}\rangle$ or $\langle b_\mathbf{R}^\dagger b_\mathbf{R}\rangle$ to obtain the number of electrons at the two sublattices at unit cell $\mathbf{R}$.
+
+Here, because the orbitals are not orthogonal, $d^\dagger_\mathbf{R}$ and $d_\mathbf{R}$ do not constitute a creation/annihilation pair ($d$ can represent any state). One can show, however, that $d_\mathbf{i}^\dagger$ and $\sum_i P_{ij}d_j$, where $P_{ij}$ is the orbital overlap, \emph{do} obey the appropriate commutation relation. Using the fact that we will include only the nearest-neighbor overlap, we write
+%
+\begin{align}
+	\rho_{\mathbf{R}}^a &= 
+	\langle a_\mathbf{R}^\dagger a_\mathbf{R}\rangle 
+	+ 
+	P\langle a_\mathbf{R}^\dagger b_\mathbf{R}\rangle
+	+
+	P\langle a_\mathbf{R}^\dagger b_{\mathbf{R}+\mathbf{d}_1}\rangle
+	+
+	P\langle a_\mathbf{R}^\dagger b_{\mathbf{R}+\mathbf{d}_2}\rangle\,,
+	\nonumber
+	\\
+	\rho_{\mathbf{R}}^b &= 
+	\langle b_\mathbf{R}^\dagger b_\mathbf{R}\rangle 
+	+ 
+	P\langle b_\mathbf{R}^\dagger a_\mathbf{R}\rangle
+	+
+	P\langle b_\mathbf{R}^\dagger a_{\mathbf{R}-\mathbf{d}_1}\rangle
+	+
+	P\langle b_\mathbf{R}^\dagger a_{\mathbf{R}-\mathbf{d}_2}\rangle\,.
+\end{align}
+%
+
+
+
+
+\section{Graphene Propagator}
+\label{sec:Propagator}
+
+To compute $\Xi_z^0(\mathbf{R})$, we first introduce
+%
+\begin{equation}
+	\Omega^{u,v}_z =
+	\frac{1}{N}\sum_{\mathbf{q}\in\mathrm{BZ}}
+	\frac{
+		e^{i\mathbf{q}\cdot \left(u\mathbf{d}_1 + v\mathbf{d}_2\right)}
+	}
+	{z^2 - t^2\left| f_{\mathbf{q}}\right|^2}
+	\label{eqn:Omega_R}
+\end{equation}
+%
+with $ u\mathbf{d}_1 + v\mathbf{d}_2 = \frac{d}{2}\left(u - v, \sqrt{3}\left(u+v\right)\right)$ and $t = 2.8$~eV as the nearest-neighbor hopping energy. Using $\mathbf{q}\cdot \left(u\mathbf{d}_1 + v\mathbf{d}_2\right)  = \frac{d}{2}\left[\left(u - v\right)q_x + \sqrt{3}\left(u+v\right)q_y\right]$ and turning the momentum sum into an integral yields
+%
+\begin{align}
+	\Omega^{u,v}\left(z\right) 
+	& = \frac{1}{\left(2\pi\right)^2}\oint dx \oint dy
+	\frac
+	{e^{i \left[\left(u - v\right)x + \left(u+v\right)y\right]}}
+	{z^2 - t^2\left(1 + 4\cos^2 x + 4 \cos x\cos y \right)}\,.
+	\label{eqn:Omega_R_2}
+\end{align}
+%
+From
+%
+\begin{equation}
+	\oint d\theta \frac{e^{il\theta}}{w-\cos\theta} = 2\pi \frac{\left(w - \sqrt{w - 1}\sqrt{w + 1}\right)^{|l|}}{\sqrt{w - 1}\sqrt{w + 1}}\,,
+	\label{eqn:Ang_Int}
+\end{equation}
+%
+we get
+%
+\begin{align}
+	\Omega^{u,v}_z &= \frac{1}{2\pi}\frac{1}{4t^2}
+	\oint dx \frac{e^{i\left(u - v\right)x}}{\cos x}\frac{\left(W - \sqrt{W - 1}\sqrt{W + 1}\right)^{|u+v|}}{\sqrt{W - 1}\sqrt{W + 1}}\,,
+	\label{eqn:Omega_R_3}
+	\\
+	W &= \frac{\frac{z^2}{t^2}-1}{4\cos x}-\cos x\,.
+	\label{eqn:W}
+\end{align}
+%
+Finally, $\Xi^0_z({\mathbf{R}})$ for $\mathbf{R} = u\mathbf{d}_1 + v\mathbf{d}_2$ can be written as
+%
+\begin{align}
+	\Xi^0_z({\mathbf{R}}) 
+	&=
+	\begin{pmatrix}
+		z\Omega^{u,v}_z
+		&
+		- t\left[\Omega^{u,v}_z + \Omega^{u,v}_{+,z} \right]
+		\\
+		- t\left[\Omega^{u,v}_z + \Omega^{u,v}_{-,z}\right]
+		&
+		z\Omega^{u,v}_z
+	\end{pmatrix}\,,
+	\\
+	\Omega^{u,v}_{\pm,z}
+	&= 
+	 \frac{1}{2\pi}\frac{1}{4t^2}
+	\oint dx \,2e^{i\left(u - v\right)x}\frac{\left(W - \sqrt{W - 1}\sqrt{W + 1}\right)^{|u+v\pm 1|}}{\sqrt{W - 1}\sqrt{W + 1}}
+\,.
+\end{align}
+%
+
+Again, to include the overlap, switch $t\rightarrow t+ zP$.
+
 
 \end{document}

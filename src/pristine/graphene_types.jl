@@ -8,6 +8,7 @@ struct GrapheneCoord
     sublattice::String
 end
 
+# Location structure in Angstroms
 struct Location
     x::Float64
     y::Float64
@@ -59,6 +60,7 @@ function atom_move(atom::GrapheneCoord, u, v)
     return GrapheneCoord(atom.u + u, atom.v + v, atom.sublattice)
 end
 
+# Converting Crystal coordinates to Cartesian in Angstroms
 function crystal_to_cartesian(coord::GrapheneCoord)
     u = coord.u
     v = coord.v
@@ -74,13 +76,3 @@ function crystal_to_cartesian(coord::GrapheneCoord)
 
     return (Location(x, y + shft))
 end
-
-# 
-# @time crystal_to_cartesian(graphene_B(0, 0))
-#
-# function crystaltocartesian2d(rcrystal::Tuple, a1::Tuple, a2::Tuple)
-#     rcartesian = zeros(2)
-#     rcartesian[1] = (rcrystal[1] * a1[1]) + (rcrystal[2] * a2[1])
-#     rcartesian[2] = (rcrystal[1] * a1[2]) + (rcrystal[2] * a2[2])
-#     return Tuple(rcartesian)
-# end
